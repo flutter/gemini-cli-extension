@@ -10,5 +10,5 @@ We're going to work on some Dart code, so please review the following for me:
 3. Summarize the rules you have around working with Dartdoc API comments.
 4. List the tools you have available for working with Dart code.
 
-Please follow these rules closely for this session, and prefer using the tools over just running `dart` or `flutter` on the command line.
+Please follow these rules closely for this session, and always prefer using the tools over just running `dart` or `flutter` on the command line.
 """

@@ -7,15 +7,15 @@ We're going to build a new Flutter app.
 
 ## Problem specification
 
-First, I want you to prompt me for a description of what the purpose and details of the package will be, and ask where to put it.
+First, prompt the user for a description of the purpose and details of the package, and ask where to put it.
 
-If there are ambiguous elements, ask me questions to clarify. When the goal is clear, or I say to, then move on.
+If there are ambiguous elements, ask the user questions to clarify. When the goal is clear, or the user says to, then move on.
 
 ## Initial Configuration
 
-If I didn't already give one, select a short descriptive name for the project.
+If the user didn't already give one, select a short descriptive name for the project.
 
-Next, create a Flutter project in the desired location using the name. Unless I specify otherwise, the project should support all of the default platforms. Use the create_project tool to create it. For Flutter, create an empty project using the `empty` flag for the tool.
+Next, create a Flutter project in the desired location using the name. Unless the user specifies otherwise, the project should support all of the default platforms. Use the create_project tool to create it. For Flutter, create an empty project using the `empty` flag for the tool.
 
 Remove all of the boilerplate in the new project, and use the `pub` tool to add the `dart_flutter_team_lints` package to the pubspec.yaml, and replace the contents of the `analysis_options.yaml` file with:
 
@@ -45,7 +45,7 @@ The design doc should (at least) include sections for:
 - A summary of the design
 - References to research URLs used to arrive at the design.
 
-Have me review this design document and approve it before moving on.
+Have the user review this design document and approve it before moving on.
 
 ## Implementation plan
 
@@ -61,12 +61,12 @@ The implementation plan should specify after each phase that you should:
 - [ ] Run the analyze_files tool one more time and fix any issues.
 - [ ] Run any tests to make sure they all pass.
 - [ ] Run dart_format one more time to make sure that the formatting is still correct if you made any changes during the analysis and testing steps.
-- [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to me for approval.
+- [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 - [ ] Re-read the IMPLEMENTATION.md file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 - [ ] Update the IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section.
-- [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until I approve the commit.
+- [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
 
 In the last phase of the plan, you should include a step to create a comprehensive README.md file for the package.
 
-Have me review this implementation plan and approve it before starting implementation.
+Have the user review this implementation plan and approve it before starting implementation.
 """

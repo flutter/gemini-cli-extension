@@ -8,7 +8,7 @@ Time to clean up in preparation for commit. Please perform these tasks:
 1. Run the dart_fix and dart_format tools to clean up the code.
 2. Run the analyze_files tool one more time and fix any issues.
 3. Run any tests to make sure they all pass.
-4. Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to me for approval. Don't commit the changes until I approve.
+4. Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval. Don't commit the changes until the user approves them.
 
 The commit message should follow the "Conventional Commits" spec:
 
