@@ -7,21 +7,21 @@ We're going to refactor some code.
 
 ## Problem specification
 
-First, I want you to prompt me for a description of what the purpose of the refactor is, what I want done, and whether it should be done on a new branch.
+First, prompt the user for a description of the refactor's purpose, what the user wants done, and whether it should be done on a new branch.
 
-If there are ambiguous elements, ask me questions to clarify. When the goal is clear, or I say to, then move on to initializaing the workspace.
+If there are ambiguous elements, ask the user questions to clarify. When the goal is clear, or the user says to, then move on to initializing the workspace.
 
 ## Initialize workspace
 
-First, make sure there aren't any changes that need committing in the branch. If there are, notify me, and ask me what I'd like to do about it.
+First, make sure there are no uncommitted changes on the current branch. If there are, notify the user and ask what they would like to do about them.
 
-If the work is to be done on a new branch, then create a new refactor branch based on the current branch, giving the branch an appropriate name if I didn't specify one.
+If the work is to be done on a new branch, then create a new refactor branch based on the current branch, giving the branch an appropriate name if the user didn't specify one.
 
 ## Refactor design document
 
 Develop a **DETAILED** Markdown-formatted design document that follows all of the guidance you have about Dart design patterns, rules, best practices, and core principles. Save the implementation plan in REFACTOR.md in the top directory of the workspace. Feel free to use your available tools to research any aspects of the refactor that are unclear.
 
-The design doc should (at least) include sections for:
+The design doc should (at least) include:
 
 - An overview
 - A detailed analysis of the goal or problem
@@ -31,26 +31,30 @@ The design doc should (at least) include sections for:
 - A summary of the design
 - References to research URLs used to arrive at the design.
 
-Have me review this design document and approve it before moving on.
+Have the user review this design document and approve it before moving on.
 
 ## Implementation plan
 
 Develop a **DETAILED** Markdown-formatted phased implementation plan of checkboxed tasks that need to be performed in order to finish the refactor. Save the implementation plan in REFACTOR_IMPLEMENTATION.md in the top of the repo.
 
-The implementation plan should include a section for the "Journal" which will be updated after each phase.
+The implementation plan should include a section for the "Journal" which is to be updated after each phase, including checking off completed checklist items. The checklist should be updated before committing the code for the completed phase.
 
-The plan should include instructions similar to: "After completing a task, if you added any TODOs to the code or didn't fully implement anything, make sure to add new tasks so that you can come back and complete them later." to prevent leaving tasks unfinished.
+The plan must include instructions similar to: "After completing a task, if you added any TODOs to the code or didn't fully implement anything, make sure to add new tasks so that you can come back and complete them later." to prevent leaving tasks unfinished.
 
-The implementation plan should specify after each phase that you should:
+The plan must include updating any existing tests, creating new ones if needed, and ensuring that all tests pass before the plan is complete.
+
+The plan must also include instructions for updating any documentation that changed as a result of the refactor.
+
+The implementation plan should specify this checklist after each phase:
 
 - [ ] Run the dart_fix and dart_format tools to clean up the code.
 - [ ] Run the analyze_files tool one more time and fix any issues.
 - [ ] Run any tests to make sure they all pass.
 - [ ] Run dart_format one more time to make sure that the formatting is still correct if you made any changes during the analysis and testing steps.
-- [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to me for approval.
 - [ ] Re-read the REFACTOR_IMPLEMENTATION.md file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 - [ ] Update the REFACTOR_IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section.
-- [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until I approve the commit.
+- [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
+- [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
 
-Have me review this implementation plan and approve it before starting implementation.
+Have the user review this implementation plan and approve it before starting implementation.
 """
