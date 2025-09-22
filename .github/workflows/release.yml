@@ -24,7 +24,7 @@ jobs:
       - name: Create archive
         run: |
           tag_name=${GITHUB_REF#refs/tags/}
-          archive_name="gemini-cli-extension-${tag_name}.tar.gz"
+          archive_name="flutter.tar.gz"
           git archive --format=tar.gz -o $archive_name $tag_name \
             gemini-extension.json \
             commands/ \
