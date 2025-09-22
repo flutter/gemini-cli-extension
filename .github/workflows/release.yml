@@ -1,0 +1,34 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create archive
+        run: |
+          tag_name=${GITHUB_REF#refs/tags/}
+          archive_name="gemini-cli-extension-${tag_name}.tar.gz"
+          git archive --format=tar.gz -o $archive_name $tag_name \
+            gemini-extension.json \
+            commands/ \
+            override \
+            LICENSE \
+            README.md \
+            flutter.md
+          echo "ARCHIVE_NAME=$archive_name" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.ARCHIVE_NAME }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
