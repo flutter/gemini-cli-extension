@@ -25,10 +25,11 @@ jobs:
             flutter.md
           echo "ARCHIVE_NAME=$archive_name" >> $GITHUB_ENV
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ${{ env.ARCHIVE_NAME }}
+      - name: Create GitHub Release with GH CLI
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.ref_name }} \
+            --generate-notes \
+            ${{ env.ARCHIVE_NAME }}
 
