@@ -32,7 +32,11 @@ jobs:
             LICENSE \
             README.md \
             flutter.md
-          echo "ARCHIVE_NAME=$archive_name" >> $GITHUB_ENV
+          for architecture in linux macos win32; do
+            architecture_name="$architecture.$archive_name"
+            cp "$archive_name" "$architecture_name"
+            echo "${architecture^^}_ARCHIVE_NAME=$architecture_name" >> $GITHUB_ENV
+          done
 
       - name: Create GitHub Release with GH CLI
         env:
@@ -40,4 +44,6 @@ jobs:
         run: |
           gh release create ${{ github.ref_name }} \
             --generate-notes \
-            ${{ env.ARCHIVE_NAME }}
+            ${{ env.LINUX_ARCHIVE_NAME }} \
+            ${{ env.MACOS_ARCHIVE_NAME }} \
+            ${{ env.WIN32_ARCHIVE_NAME }}
