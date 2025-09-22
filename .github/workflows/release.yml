@@ -1,9 +1,16 @@
+# To create a new release,
+# 1) Tag the git ref you would like to release with a version number starting with "v".
+# 2) Push that tag to Github with git push.
+#
+# E.g.:
+# git tag v1.0.0 && git push upstream v1.0.0
+
 name: Create Release
 
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   release:
@@ -32,4 +39,3 @@ jobs:
           gh release create ${{ github.ref_name }} \
             --generate-notes \
             ${{ env.ARCHIVE_NAME }}
-
