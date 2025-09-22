@@ -7,6 +7,9 @@ A repository of guidance for AI agents building Flutter and Dart code.
 This is an experimental repository, which means the things will change
 (sometimes drastically). Feedback very welcome!
 
+This project is intended for demonstration purposes only. It is not
+intended for use in a production environment.
+
 ## Contribute
 
 See [CONTRIBUTING.md](CONTRIBUTING.md)
