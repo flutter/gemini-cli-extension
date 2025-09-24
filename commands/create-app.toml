@@ -21,11 +21,7 @@ If the user didn't already give one, select a short descriptive name for the pro
 
 Next, create a Flutter project in the desired location using the name. Unless the user specifies otherwise, the project should support all of the default platforms. Use the create_project tool to create it. For Flutter, create an empty project using the `empty` flag for the tool.
 
-Remove all of the boilerplate in the new project, and use the `pub` tool to add the `dart_flutter_team_lints` package to the pubspec.yaml, and replace the contents of the `analysis_options.yaml` file with:
-
-```yaml
-include: package:dart_flutter_team_lints/analysis_options.yaml
-```
+Remove the boilerplate in the new project by removing the test dir, if any, and the README.md file.
 
 Update the description of the package in the `pubspec.yaml` and set the version number to 0.1.0.
 
@@ -37,7 +33,7 @@ Commit this empty version of the project to a new git feature branch.
 
 ## Design document
 
-Develop a **DETAILED** Markdown-formatted design document that follows all of the guidance you have about Dart and Flutter design patterns, rules, best practices, and core principles. Save the implementation plan in DESIGN.md in the top directory of the new package. Feel free to use your available tools to research any aspects of the design that need clarification.
+Develop a **DETAILED** Markdown-formatted design document that follows all of the guidance you have about Dart and Flutter design patterns, rules, best practices, and core principles. Save the design document in DESIGN.md in the top directory of the new package. Feel free to use your available tools to research any aspects of the design that need clarification.
 
 The design doc should (at least) include sections for:
 
