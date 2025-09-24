@@ -54,7 +54,7 @@ extension).
 Initializes Gemini CLI to work on Dart and Flutter code. It will summarize the
 coding guidelines, documentation rules, and the tools it has available for
 Dart and Flutter
-development. Use this command at the beginning of a session to ensure the agent
+development. Use this command at the beginning of a session to ensure Gemini CLI
 is primed with the correct context.
 
 ### `/create-app` (or `/flutter:create-app` if you have more than one create-app command)
