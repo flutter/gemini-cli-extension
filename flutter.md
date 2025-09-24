@@ -444,7 +444,7 @@ linter:
   ```
 
 - **Network images:** Use NetworkImage for images loaded from the network.
-- **Cached images:** For cached images, use NetworkImage a package like
+- **Cached images:** For cached images, use a package like
   `cached_network_image`.
 - **Custom Icons:** Use `ImageIcon` to display an icon from an `ImageProvider`,
   useful for custom icons not in the `Icons` class.
@@ -453,6 +453,7 @@ linter:
   experience.
 
   ```dart
+  // When using network images, always provide an errorBuilder.
   Image.network(
     'https://picsum.photos/200/300',
     loadingBuilder: (context, child, progress) {
@@ -469,21 +470,11 @@ linter:
 
 - **Responsiveness:** Use `LayoutBuilder` or `MediaQuery` to create responsive
   UIs.
-- **Text:** Use `Theme.of(context).textTheme` for text styles.
 - **Text Fields:** Configure `textCapitalization`, `keyboardType`, and
+  `placehoder`.
 - **Responsiveness:** Use `LayoutBuilder` or `MediaQuery` to create responsive
   UIs.
 - **Text:** Use `Theme.of(context).textTheme` for text styles. remote images.
-
-```dart
-// When using network images, always provide an errorBuilder.
-Image.network(
-  'https://example.com/image.png',
-  errorBuilder: (context, error, stackTrace) {
-    return const Icon(Icons.error); // Show an error icon
-  },
-);
-```
 
 ## Material Theming Best Practices
 
