@@ -1,0 +1,43 @@
+# To create a new release,
+# 1) Tag the git ref you would like to release with a version number starting with "v".
+# 2) Push that tag to Github with git push.
+#
+# E.g.:
+# git tag v1.0.0 && git push upstream v1.0.0
+
+name: Create Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create archive
+        run: |
+          tag_name=${GITHUB_REF#refs/tags/}
+          archive_name="flutter.tar.gz"
+          git archive --format=tar.gz -o $archive_name $tag_name \
+            gemini-extension.json \
+            commands/ \
+            override \
+            LICENSE \
+            README.md \
+            flutter.md
+          echo "ARCHIVE_NAME=$archive_name" >> $GITHUB_ENV
+
+      - name: Create GitHub Release with GH CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create ${{ github.ref_name }} \
+            --generate-notes \
+            ${{ env.ARCHIVE_NAME }}

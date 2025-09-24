@@ -1,0 +1,20 @@
+# Copyright 2025 The Flutter Authors.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# Maximize verbosity.
+have_fun: false
+code_review:
+  disable: false
+  # Set to -1 for unlimited comments.
+  max_review_comments: 6
+  # For now, use the default of MEDIUM for testing. Based on desired verbosity,
+  # we can change this to LOW or HIGH in the future.
+  comment_severity_threshold: MEDIUM
+  pull_request_opened:
+    # Explicitly set help to false in case the default changes in the future, as
+    # having a help message on every PR would be spammy.
+    help: false
+    # These tend to be verbose, and since we expect PR authors to clearly
+    # describe their PRs this would be at best duplicative.
+    summary: false
