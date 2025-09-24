@@ -1,6 +1,6 @@
 # This command will be invoked via: /flutter:start
 
-description = "Prepares the model to start working on Dart code, based on the observation that conversation history is more powerful in getting the LLM to comply with the rules."
+description = "Initializes your session with rules and best practices when writing Dart and Flutter code."
 
 prompt = """
 We're going to work on some Dart code, so please review the following for me:

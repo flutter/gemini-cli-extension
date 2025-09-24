@@ -1,6 +1,6 @@
 # This command will be invoked via: /flutter:refactor
 
-description = "Prepares the model to refactor code."
+description = "Perform a refactor on your Flutter or Dart project."
 
 prompt = """
 We're going to refactor some code.

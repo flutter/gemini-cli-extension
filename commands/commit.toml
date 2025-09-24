@@ -1,6 +1,6 @@
 # This command will be invoked via: /flutter:commit
 
-description = "Asks the model to clean up the Dart code in the project and get ready to commit."
+description = "Ensure your Dart or Flutter project is in a healthy place (analysis warnings and errors are addressed, for example) and prep a descriptive git commit."
 
 prompt = """
 Time to clean up in preparation for commit. Please perform these tasks:
