@@ -11,9 +11,15 @@ We're going to build a new Flutter app.
 
 ## Problem specification
 
-First, prompt the user for a description of the purpose and details of the package, and ask where to put it.
+You're going to need to know:
 
-If there are ambiguous elements, ask the user questions to clarify. When the goal is clear, or the user says to, then move on.
+1) A description of what the purpose and details of the app are.
+2) Where to create it.
+3) Whether or not to create a new branch for it in git.
+
+First, show the user a list of the questions you will need answers for. Then ask the user for the answer to the first question in the list. Follow up with the remaining questions until they are all answered. Obviously, if the user has already answered a question, no need to ask it again.
+
+If there are still ambiguous elements or required information, ask the user questions to clarify. When the goal is clear, or the user says to, then move on.
 
 ## Initial Configuration
 
