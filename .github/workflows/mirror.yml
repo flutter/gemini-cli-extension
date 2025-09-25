@@ -1,0 +1,28 @@
+name: Mirror To gemini-cli-extensions/flutter
+
+on: [push, delete]
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup SSH and Push to Mirror
+        run: |
+          # 1. Start the ssh-agent
+          eval "$(ssh-agent -s)"
+
+          # 2. Add the SSH private key from the secret to the agent
+          # The "-" tells ssh-add to read the key from standard input
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
+
+          # 3. Add GitHub's public key to the known_hosts file to avoid interruption
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+          # 4. Push to the destination repository
+          git push --mirror git@github.com:gemini-cli-extensions/flutter.git
