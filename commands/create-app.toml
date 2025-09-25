@@ -11,25 +11,19 @@ We're going to build a new Flutter app.
 
 ## Problem specification
 
-First, prompt the user for a description of the purpose and details of the package, and ask where to put it.
+First, prompt the user for a description of what the purpose and details of the app will be.
 
-If there are ambiguous elements, ask the user questions to clarify. When the goal is clear, or the user says to, then move on.
+Once the user has specified the description and purpose of the app, outline the information that you will be collecting before creating the design and implementation plan, and present the list to the user, along with your first question.
 
-## Initial Configuration
+## Collecting Information
 
-If the user didn't already give one, select a short descriptive name for the project.
+Next, collect remaining information from the user, one question at a time.
 
-Next, create a Flutter project in the desired location using the name. Unless the user specifies otherwise, the project should support all of the default platforms. Use the create_project tool to create it. For Flutter, create an empty project using the `empty` flag for the tool.
+The information you need to collect includes, but might not be limited to:
 
-Remove the boilerplate in the new project by removing the test dir, if any, and the README.md file.
-
-Update the description of the package in the `pubspec.yaml` and set the version number to 0.1.0.
-
-Update the README.md to include a short placeholder description of the project.
-
-Update the CHANGELOG.md to have the initial version as 0.1.0.
-
-Commit this empty version of the project to a new git feature branch.
+- If there are ambiguous elements to the design, ask the user questions to clarify. When the goal is clear, or the user says to, then move on.
+- If the user didn't already give one, select a short descriptive name for the project.
+- Whether to do the work on the current git branch, or a new feature branch. Suggest a branch name.
 
 ## Design document
 
@@ -45,28 +39,42 @@ The design doc should (at least) include sections for:
 - A summary of the design
 - References to research URLs used to arrive at the design.
 
-Have the user review this design document and approve it before moving on.
+You must ask the user to review this design document and they must approve it before you continue on to create the implementation plan. They must review and approve it first because if they ask for any changes, it may affect the implementation plan.
 
 ## Implementation plan
 
-Develop a **DETAILED** Markdown-formatted phased implementation plan of checkboxed tasks that need to be performed in order to finish developing the package. Save the implementation plan in IMPLEMENTATION.md in the top directory of the new package.
+After getting explicit approval from the user for the DESIGN.md document, Develop a **DETAILED** Markdown-formatted phased implementation plan of checkboxed tasks that need to be performed in order to finish developing the package. Save the implementation plan in IMPLEMENTATION.md in the top directory of the new package.
 
 The implementation plan should include a section for the "Journal" which will be updated after each phase.
 
 The plan should include instructions similar to: "After completing a task, if you added any TODOs to the code or didn't fully implement anything, make sure to add new tasks so that you can come back and complete them later." to prevent leaving tasks unfinished.
 
+In the first phase of the implementation plan, include:
+
+- [ ] Create a Dart or Flutter project (as appropriate for the purpose) in the desired location using the name. Unless the user specifies otherwise, the project should support all of the default platforms. Use the create_project tool to create it. For Flutter projects, create an empty project using the `empty` flag for the tool.
+- [ ] Remove the boilerplate in the new project by removing the test dir, if any, and the README.md file.
+- [ ] Update the description of the package in the `pubspec.yaml` and set the version number to 0.1.0.
+- [ ] Update the README.md to include a short placeholder description of the project.
+- [ ] Update the CHANGELOG.md to have the initial version as 0.1.0.
+- [ ] Commit this empty version of the project to either a new branch or the current branch based on the user's preference.
+
 The implementation plan should specify after each phase that you should:
 
+- [ ] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
 - [ ] Run the dart_fix and dart_format tools to clean up the code.
 - [ ] Run the analyze_files tool one more time and fix any issues.
 - [ ] Run any tests to make sure they all pass.
 - [ ] Run dart_format one more time to make sure that the formatting is still correct if you made any changes during the analysis and testing steps.
-- [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 - [ ] Re-read the IMPLEMENTATION.md file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
 - [ ] Update the IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section.
+- [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 - [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
 
 In the last phase of the plan, you should include a step to create a comprehensive README.md file for the package.
 
-Have the user review this implementation plan and approve it before starting implementation.
+You must ask the user to review this implementation plan and they must approve it before starting implementation. They must review and approve it before you begin because if they ask for any changes, they may affect the implementation.
+
+## Implementation
+
+After getting explicit approval from the user for the IMPLEMENTATION.md document, begin implementing the plan.
 """
