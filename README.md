@@ -2,7 +2,7 @@
 
 Help Gemini CLI create, build, test, and run Flutter apps.
 
-*   **Status: Experimental** - This is an experimental repository. Features and commands may change drastically. We welcome your feedback!
+*   **Status: Experimental** - This is an experimental project. Features and commands may change drastically. We welcome your feedback!
 
 ## ✨ Features
 
@@ -40,7 +40,7 @@ gemini extensions uninstall flutter
 
 ### 2. Available Commands
 
-The new commands will be available in new terminal sessions. The following commands will be available (with or without the `flutter:` prefix):
+The new commands will be available in new Gemini CLI sessions. The following commands will be available (with or without the `flutter:` prefix):
 
 -   `/start` - Primes Gemini with the rules and context for Flutter development.
 -   `/create-app` - Guides you through bootstrapping a new Flutter project with best practices.
