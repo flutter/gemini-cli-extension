@@ -20,7 +20,7 @@ jobs:
       - name: Setup SSH and Push to Mirror
         run: |
           # 0. Check for the secret.
-          if [[ -n "${{ secrets.GEMINI_CLI_EXTENSIONS_FLUTTER_MIRROR_KEY }}" ]]; then
+          if [[ -z "${{ secrets.GEMINI_CLI_EXTENSIONS_FLUTTER_MIRROR_KEY }}" ]]; then
             echo "SSH Secret not available, exiting."
             exit 0
           fi
