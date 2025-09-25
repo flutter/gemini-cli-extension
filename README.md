@@ -28,17 +28,6 @@ Use the `gemini extensions install` command to install directly from the source 
 gemini extensions install --source https://github.com/gemini-cli-extensions/flutter.git
 ```
 
-### 2. Activate
-
-Restart the Gemini CLI. The following commands will be available (with or without the `flutter:` prefix):
-
--   `/start` - Primes Gemini with the rules and context for Flutter development.
--   `/create-app` - Guides you through bootstrapping a new Flutter project with best practices.
--   `/refactor` - Manages a structured refactoring session with automated planning.
--   `/commit` - Automates pre-commit checks and generates a descriptive commit message.
-
-### 3. Update or Uninstall
-
 You can manage the extension with the following commands:
 
 ```bash
@@ -49,6 +38,15 @@ gemini extensions update flutter
 gemini extensions uninstall flutter
 ```
 
+### 2. Available Commands
+
+The new commands will be available in new terminal sessions. The following commands will be available (with or without the `flutter:` prefix):
+
+-   `/start` - Primes Gemini with the rules and context for Flutter development.
+-   `/create-app` - Guides you through bootstrapping a new Flutter project with best practices.
+-   `/refactor` - Manages a structured refactoring session with automated planning.
+-   `/commit` - Automates pre-commit checks and generates a descriptive commit message.
+
 ## 💡 Usage
 
 This extension provides powerful commands to automate key phases of the development lifecycle.
@@ -58,8 +56,8 @@ This extension provides powerful commands to automate key phases of the developm
 Initializes Gemini with the proper context for Flutter development. It summarizes the coding guidelines, documentation rules, and available tools. **Use this command at the beginning of a session.**
 
 ```bash
-/start // Initialize context to start a session
-/start What were we last doing in this app? // Start a session and pick up where you left off
+/start # Initialize context to start a session
+/start What were we last doing in this app? # Start a session and pick up where you left off
 ```
 
 ### `/create-app`
