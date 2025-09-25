@@ -25,7 +25,7 @@ Help Gemini CLI create, build, test, and run Flutter apps.
 Use the `gemini extensions install` command to install directly from the source repository:
 
 ```bash
-gemini extensions install --source https://github.com/gemini-cli-extensions/flutter.git
+gemini extensions install https://github.com/gemini-cli-extensions/flutter.git
 ```
 
 You can manage the extension with the following commands:
