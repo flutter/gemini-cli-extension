@@ -28,7 +28,6 @@ jobs:
           git archive --format=tar.gz -o $archive_name $tag_name \
             gemini-extension.json \
             commands/ \
-            override \
             LICENSE \
             README.md \
             flutter.md
