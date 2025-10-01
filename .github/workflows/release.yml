@@ -13,16 +13,46 @@ on:
       - "v*"
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create archive
-        run: bash ./scripts/build_release.sh >> $GITHUB_ENV
+      - name: Create archive (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          bash ./scripts/build_release.sh >> $GITHUB_ENV
+          new_name="flutter-${{ runner.os }}.tar.gz"
+          mv $ARCHIVE_NAME $new_name
+          echo "ARCHIVE_NAME=$new_name" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Create archive (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          ./scripts/build_release.ps1
+        shell: pwsh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-archive-${{ matrix.os }}
+          path: ${{ env.ARCHIVE_NAME }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
 
       - name: Create GitHub Release with GH CLI
         env:
@@ -30,4 +60,6 @@ jobs:
         run: |
           gh release create ${{ github.ref_name }} \
             --generate-notes \
-            ${{ env.ARCHIVE_NAME }}
+            artifacts/release-archive-ubuntu-latest/* \
+            artifacts/release-archive-macos-latest/* \
+            artifacts/release-archive-windows-latest/*

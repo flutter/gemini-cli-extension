@@ -1,26 +1,34 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 
 tag_name=${GITHUB_REF#refs/tags/}
-archive_name="flutter.tar"
-dill_file="flutter_launcher_mcp.dill"
+os=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+if [[ $os == 'darwin' ]]; then
+  arch=$(uname -m | tr '[:upper:]' '[:lower:]')
+else
+  arch='x64'
+fi
+
+archive_name="$os.$arch.flutter.tar"
+exe_file="flutter_launcher_mcp.exe"
 trap 'rm -f "$compile_log"' EXIT
 compile_log="$(mktemp --tmpdir compile_log_XXXX)"
 
-function build_dill() (
+function build_exe() (
   CDPATH= cd flutter_launcher_mcp && \
   dart pub get && \
-  dart compile kernel bin/flutter_launcher_mcp.dart -o "../$dill_file" 2>&1 > "$compile_log"
+  dart compile exe bin/flutter_launcher_mcp.dart -o "../$exe_file" 2>&1 > "$compile_log"
 )
 
-build_dill || \
-  (echo "Failed to compile $dill_file"; \
+build_exe || \
+  (echo "Failed to compile $exe_file"; \
    cat "$compile_log"; \
    rm -f "$compile_log"; \
    exit 1)
 
-rm -f "$compile_log"
+rm -f "$compile_log" "$archive_name"
 
 # Create the archive of the extension sources that are in the git ref.
 git archive --format=tar -o "$archive_name" "$tag_name" \
@@ -31,8 +39,8 @@ git archive --format=tar -o "$archive_name" "$tag_name" \
   flutter.md
 
 # Append the compiled kernel file to the archive.
-tar --append --file="$archive_name" "$dill_file"
-rm -f "$dill_file"
-gzip "$archive_name"
+tar --append --file="$archive_name" "$exe_file"
+rm -f "$exe_file"
+gzip --force "$archive_name"
 
 echo "ARCHIVE_NAME=$archive_name.gz"
