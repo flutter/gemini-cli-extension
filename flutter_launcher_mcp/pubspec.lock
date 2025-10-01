@@ -338,7 +338,7 @@ packages:
     source: hosted
     version: "1.12.1"
   stream_channel:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: stream_channel
       sha256: "969e04c80b8bcdf826f8f16579c7b14d780458bd97f56d107d3950fdbeef059d"

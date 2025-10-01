@@ -76,7 +76,7 @@ Future<ProjectKind> inferProjectKind(
 /// the [request] does not specify its own paths.
 Future<CallToolResult> runCommandInRoots(
   CallToolRequest request, {
-  FutureOr<String> Function(String, FileSystem, Sdk) commandForRoot =
+  FutureOr<String?> Function(String, FileSystem, Sdk) commandForRoot =
       defaultCommandForRoot,
   List<String> arguments = const [],
   required String commandDescription,
@@ -133,7 +133,7 @@ Future<CallToolResult> runCommandInRoots(
 Future<CallToolResult> runCommandInRoot(
   CallToolRequest request, {
   Map<String, Object?>? rootConfig,
-  FutureOr<String> Function(String, FileSystem, Sdk) commandForRoot =
+  FutureOr<String?> Function(String, FileSystem, Sdk) commandForRoot =
       defaultCommandForRoot,
   List<String> arguments = const [],
   required String commandDescription,
@@ -186,10 +186,20 @@ Future<CallToolResult> runCommandInRoot(
   }
   final projectRoot = fileSystem.directory(rootUri);
 
-  final commandWithPaths = <String>[
-    await commandForRoot(rootUriString, fileSystem, sdk),
-    ...arguments,
-  ];
+  final command = await commandForRoot(rootUriString, fileSystem, sdk);
+  if (command == null) {
+    return CallToolResult(
+      content: [
+        TextContent(
+          text:
+              'Flutter executable not found. Please ensure the Flutter SDK is in your path and restart the MCP server.',
+        ),
+      ],
+      isError: true,
+    );
+  }
+
+  final commandWithPaths = <String>[command, ...arguments];
   final paths =
       (rootConfig?[ParameterNames.paths] as List?)?.cast<String>() ??
       defaultPaths;
@@ -344,7 +354,7 @@ validateRootConfig(
 /// Returns 'dart' or 'flutter' based on the pubspec contents.
 ///
 /// Throws an [ArgumentError] if there is no pubspec.
-Future<String> defaultCommandForRoot(
+Future<String?> defaultCommandForRoot(
   String rootUri,
   FileSystem fileSystem,
   Sdk sdk,

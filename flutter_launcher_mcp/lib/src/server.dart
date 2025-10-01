@@ -28,7 +28,7 @@ final class FlutterLauncherMCPServer extends MCPServer
         FlutterLauncherSupport
     implements ProcessManagerSupport, FileSystemSupport, SdkSupport {
   @override
-  Sdk sdk;
+  final Sdk sdk;
 
   @override
   final ProcessManager processManager;

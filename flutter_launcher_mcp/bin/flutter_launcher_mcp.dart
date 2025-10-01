@@ -15,7 +15,7 @@ import 'package:process/process.dart';
 const logLevelOption = 'log-level';
 const helpFlag = 'help';
 
-void main(List<String> arguments) {
+Future<void> main(List<String> arguments) async {
   final parser = ArgParser()
     ..addOption(
       logLevelOption,
@@ -43,18 +43,19 @@ void main(List<String> arguments) {
 
   const processManager = LocalProcessManager();
   const fileSystem = LocalFileSystem();
-  // First, find the SDK without logging.
-  final initialSdk = Sdk.find();
+  final sdk = Sdk();
 
   final server = FlutterLauncherMCPServer(
     stdioChannel(input: stdin, output: stdout),
+    sdk: sdk,
     processManager: processManager,
     fileSystem: fileSystem,
-    sdk: initialSdk,
     initialLogLevel: logLevel,
   );
 
-  // Now that we have a server with a logger, create a new Sdk instance
-  // that can log and replace the old one.
-  server.sdk = Sdk.find(log: server.log);
+  await server.sdk.init(
+    processManager: processManager,
+    fileSystem: fileSystem,
+    log: server.log,
+  );
 }

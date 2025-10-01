@@ -211,6 +211,17 @@ base mixin FlutterLauncherSupport
   }
 
   Future<CallToolResult> _launchApp(CallToolRequest request) async {
+    if (sdk.flutterExecutablePath == null) {
+      return CallToolResult(
+        isError: true,
+        content: [
+          TextContent(
+            text:
+                'Flutter executable not found. Please ensure the Flutter SDK is in your path and restart the MCP server.',
+          ),
+        ],
+      );
+    }
     final root = request.arguments!['root'] as String;
     final target = request.arguments!['target'] as String?;
     final device = request.arguments!['device'] as String;
@@ -225,7 +236,7 @@ base mixin FlutterLauncherSupport
     try {
       process = await processManager.start(
         [
-          sdk.flutterExecutablePath,
+          sdk.flutterExecutablePath!,
           'run',
           '--print-dtd',
           '--device-id',
@@ -346,10 +357,21 @@ base mixin FlutterLauncherSupport
   }
 
   Future<CallToolResult> _listDevices(CallToolRequest request) async {
+    if (sdk.flutterExecutablePath == null) {
+      return CallToolResult(
+        isError: true,
+        content: [
+          TextContent(
+            text:
+                'Flutter executable not found. Please ensure the Flutter SDK is in your path and restart the MCP server.',
+          ),
+        ],
+      );
+    }
     try {
       log(LoggingLevel.debug, 'Listing flutter devices.');
       final result = await processManager.run([
-        sdk.flutterExecutablePath,
+        sdk.flutterExecutablePath!,
         'devices',
         '--machine',
       ]);

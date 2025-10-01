@@ -5,10 +5,14 @@
 /// A library for locating and interacting with the Dart and Flutter SDKs.
 library;
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dart_mcp/server.dart';
+import 'package:file/file.dart';
+import 'package:file/local.dart';
 import 'package:path/path.dart' as p;
+import 'package:process/process.dart';
 
 /// An interface that provides access to an [Sdk] instance.
 ///
@@ -24,98 +28,97 @@ abstract interface class SdkSupport {
 /// convenience getters for the executable paths.
 class Sdk {
   /// The path to the root of the Dart SDK.
-  final String? dartSdkPath;
+  String? dartSdkPath;
 
   /// The path to the root of the Flutter SDK.
-  final String? flutterSdkPath;
+  String? flutterSdkPath;
 
   /// Creates a new [Sdk] instance.
   Sdk({this.dartSdkPath, this.flutterSdkPath});
 
-  /// Creates an [Sdk] instance by attempting to locate the SDKs.
+  /// Initializes the SDK paths by attempting to locate the SDKs.
   ///
-  /// If [dartSdkPath] is not provided, it defaults to the directory containing
-  /// the currently running Dart executable. It validates the path by checking
-  /// for the existence of a `version` file.
-  ///
-  /// If [flutterSdkPath] is not provided, it searches up from the Dart SDK
-  /// path to see if it is nested inside a Flutter SDK (e.g., in the
-  /// `bin/cache` directory).
-  ///
-  /// Throws an [ArgumentError] if the Dart SDK path is invalid.
-  factory Sdk.find({
-    String? dartSdkPath,
-    String? flutterSdkPath,
+  /// This method runs `flutter --version --machine` to find the Flutter SDK,
+  /// and from that it derives the Dart SDK path. If `flutter` is not in the
+  /// path or the command fails, the SDK paths will be null.
+  Future<void> init({
+    ProcessManager processManager = const LocalProcessManager(),
+    FileSystem fileSystem = const LocalFileSystem(),
     void Function(LoggingLevel, String)? log,
-  }) {
+  }) async {
     log?.call(LoggingLevel.debug, 'Finding SDKs...');
-    // Assume that we are running from the Dart SDK bin dir if not given any
-    // other configuration.
-    dartSdkPath ??= p.dirname(p.dirname(Platform.resolvedExecutable));
-    log?.call(LoggingLevel.debug, 'Using Dart SDK path: $dartSdkPath');
+    try {
+      final result = await processManager.run([
+        'flutter',
+        '--version',
+        '--machine',
+      ]);
 
-    final versionFile = dartSdkPath.child('version');
-    if (!File(versionFile).existsSync()) {
-      log?.call(
-        LoggingLevel.warning,
-        'Invalid Dart SDK path, no version file found.',
-      );
-      throw ArgumentError('Invalid Dart SDK path: $dartSdkPath');
-    }
+      if (result.exitCode != 0) {
+        log?.call(
+          LoggingLevel.warning,
+          'Failed to find Flutter SDK: `flutter --version --machine` failed with exit code ${result.exitCode}. '
+          'Please ensure the Flutter SDK is in your path and restart the MCP server.',
+        );
+        return;
+      }
 
-    // Check if this is nested inside a Flutter SDK.
-    if (dartSdkPath.parent case final cacheDir
-        when cacheDir.basename == 'cache' && flutterSdkPath == null) {
+      final json = jsonDecode(result.stdout as String);
+      final foundFlutterSdkPath = json['flutterRoot'] as String?;
+      if (foundFlutterSdkPath == null) {
+        log?.call(
+          LoggingLevel.warning,
+          'Failed to find flutterRoot in `flutter --version --machine` output.',
+        );
+        return;
+      }
       log?.call(
         LoggingLevel.debug,
-        'Dart SDK appears to be in a `cache` directory.',
+        'Found Flutter SDK at: $foundFlutterSdkPath',
       );
-      if (cacheDir.parent case final binDir when binDir.basename == 'bin') {
-        log?.call(LoggingLevel.debug, 'Found `bin` directory above `cache`.');
-        final flutterExecutable = binDir.child(
-          'flutter${Platform.isWindows ? '.bat' : ''}',
-        );
-        if (File(flutterExecutable).existsSync()) {
-          flutterSdkPath = binDir.parent;
-          log?.call(
-            LoggingLevel.debug,
-            'Found Flutter SDK at: $flutterSdkPath',
-          );
-        }
-      }
-    }
+      flutterSdkPath = foundFlutterSdkPath;
 
-    return Sdk(dartSdkPath: dartSdkPath, flutterSdkPath: flutterSdkPath);
+      final foundDartSdkPath = p.join(
+        flutterSdkPath!,
+        'bin',
+        'cache',
+        'dart-sdk',
+      );
+      final versionFile = p.join(foundDartSdkPath, 'version');
+      if (!fileSystem.file(versionFile).existsSync()) {
+        log?.call(
+          LoggingLevel.warning,
+          'Invalid Dart SDK path, no version file found at ${p.join(foundDartSdkPath, 'version')}.',
+        );
+        return;
+      }
+      log?.call(LoggingLevel.debug, 'Found Dart SDK at: $foundDartSdkPath');
+      dartSdkPath = foundDartSdkPath;
+    } on ProcessException catch (e) {
+      log?.call(
+        LoggingLevel.warning,
+        'Failed to find Flutter SDK. The "flutter" command is not in your path or failed to run. '
+        'Please ensure the Flutter SDK is in your path and restart the MCP server. Error: ${e.message}',
+      );
+    } catch (e, s) {
+      log?.call(
+        LoggingLevel.warning,
+        'Exception while trying to find Flutter SDK: $e\n$s',
+      );
+    }
   }
 
   /// The path to the `dart` executable.
-  ///
-  /// Throws an [ArgumentError] if [dartSdkPath] is `null`.
-  String get dartExecutablePath =>
-      dartSdkPath
-          ?.child('bin')
-          .child('dart${Platform.isWindows ? '.exe' : ''}') ??
-      (throw ArgumentError(
-        'Dart SDK location unknown, try setting the DART_SDK environment '
-        'variable.',
-      ));
+  String? get dartExecutablePath => dartSdkPath
+      ?.child('bin')
+      .child('dart${Platform.isWindows ? '.exe' : ''}');
 
   /// The path to the `flutter` executable.
-  ///
-  /// Throws an [ArgumentError] if [flutterSdkPath] is `null`.
-  String get flutterExecutablePath =>
-      flutterSdkPath
-          ?.child('bin')
-          .child('flutter${Platform.isWindows ? '.bat' : ''}') ??
-      (throw ArgumentError(
-        'Flutter SDK location unknown. To work on flutter projects, you must '
-        'spawn the server using `dart` from the flutter SDK and not a Dart '
-        'SDK, or set a FLUTTER_SDK environment variable.',
-      ));
+  String? get flutterExecutablePath => flutterSdkPath
+      ?.child('bin')
+      .child('flutter${Platform.isWindows ? '.bat' : ''}');
 }
 
 extension on String {
-  String get basename => p.basename(this);
   String child(String path) => p.join(this, path);
-  String get parent => p.dirname(this);
 }
