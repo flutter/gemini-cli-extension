@@ -57,6 +57,7 @@ In the first phase of the implementation plan, include:
 - [ ] Update the README.md to include a short placeholder description of the project.
 - [ ] Update the CHANGELOG.md to have the initial version as 0.1.0.
 - [ ] Commit this empty version of the project to either a new branch or the current branch based on the user's preference.
+- [ ] Start running the app with the launch_app tool on the user's preferred device.
 
 The implementation plan should specify after each phase that you should:
 
@@ -69,6 +70,7 @@ The implementation plan should specify after each phase that you should:
 - [ ] Update the IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section.
 - [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 - [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
+- [ ] If the app is running, use the hot_reload tool to reload it.
 
 In the last phase of the plan, you should include a step to create a comprehensive README.md file for the package.
 
