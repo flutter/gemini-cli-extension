@@ -23,7 +23,7 @@ If the work is to be done on a new branch, then create a new branch based on the
 
 ## Modification design document
 
-Develop a **DETAILED** Markdown-formatted design document that follows all of the guidance you have about Dart design patterns, rules, best practices, and core principles. Save the implementation plan in MODIFICATION_DESIGN.md in the top directory of the workspace. Feel free to use your available tools to research any aspects of the modification that are unclear.
+Develop a **DETAILED** Markdown-formatted design document that follows all of the guidance you have about Dart design patterns, rules, best practices, and core principles. Save the design document in MODIFICATION_DESIGN.md in the top directory of the workspace. Feel free to use your available tools to research any aspects of the modification that are unclear.
 
 The design doc should (at least) include:
 
