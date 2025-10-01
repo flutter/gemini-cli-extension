@@ -13,28 +13,10 @@ on:
       - "v*"
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
-    container: google/dart:stable
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Create archive
-        run: |
-          bash ./scripts/build_release.sh
-        shell: bash
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-archive-ubuntu-latest
-          path: ${{ env.ARCHIVE_NAME }}
-
-  build-non-linux:
+  build:
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout code
@@ -43,8 +25,8 @@ jobs:
       - name: Setup Dart
         uses: dart-lang/setup-dart@v1
 
-      - name: Create archive (macOS)
-        if: matrix.os == 'macos-latest'
+      - name: Create archive (macOS, Linux)
+        if: matrix.os == 'macos-latest' || matrix.os == 'ubuntu-latest'
         run: |
           bash ./scripts/build_release.sh
         shell: bash
@@ -62,7 +44,7 @@ jobs:
           path: ${{ env.ARCHIVE_NAME }}
 
   release:
-    needs: [build-linux, build-non-linux]
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
