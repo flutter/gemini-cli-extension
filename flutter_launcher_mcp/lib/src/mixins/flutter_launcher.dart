@@ -56,7 +56,8 @@ base mixin FlutterLauncherSupport
               'The main entry point file of the application. Defaults to "lib/main.dart".',
         ),
         'device': Schema.string(
-          description: 'The device ID to launch the application on.',
+          description:
+              "The device ID to launch the application on. To get a list of available devices to present as choices, use the list_devices tool.",
         ),
       },
       required: ['root', 'device'],
@@ -73,142 +74,6 @@ base mixin FlutterLauncherSupport
       required: ['dtdUri', 'pid'],
     ),
   );
-
-  /// A tool to list available Flutter devices.
-  final listDevicesTool = Tool(
-    name: 'list_devices',
-    description: 'Lists available Flutter devices.',
-    inputSchema: Schema.object(),
-    outputSchema: Schema.object(
-      properties: {
-        'devices': Schema.list(
-          description: 'A list of available device IDs.',
-          items: Schema.string(),
-        ),
-      },
-      required: ['devices'],
-    ),
-  );
-
-  /// A tool to stop a running Flutter application.
-  final stopAppTool = Tool(
-    name: 'stop_app',
-    description: 'Kills a running Flutter process managed by this server.',
-    inputSchema: Schema.object(
-      properties: {
-        'pid': Schema.int(
-          description: 'The process ID of the process to kill.',
-        ),
-      },
-      required: ['pid'],
-    ),
-    outputSchema: Schema.object(
-      properties: {
-        'success': Schema.bool(
-          description: 'Whether the process was killed successfully.',
-        ),
-      },
-      required: ['success'],
-    ),
-  );
-
-  /// A tool to get the logs for a running Flutter application.
-  final getAppLogsTool = Tool(
-    name: 'get_app_logs',
-    description:
-        'Returns the collected logs for a given flutter run process id.',
-    inputSchema: Schema.object(
-      properties: {
-        'pid': Schema.int(
-          description: 'The process ID of the flutter run process.',
-        ),
-      },
-      required: ['pid'],
-    ),
-    outputSchema: Schema.object(
-      properties: {
-        'logs': Schema.list(
-          description: 'The collected logs for the process.',
-          items: Schema.string(),
-        ),
-      },
-      required: ['logs'],
-    ),
-  );
-
-  /// A tool to list all running Flutter applications.
-  final listRunningAppsTool = Tool(
-    name: 'list_running_apps',
-    description:
-        'Returns the list of running app process IDs and associated DTD URIs.',
-    inputSchema: Schema.object(),
-    outputSchema: Schema.object(
-      properties: {
-        'apps': Schema.list(
-          description: 'A list of running applications.',
-          items: Schema.object(
-            properties: {
-              'pid': Schema.int(
-                description: 'The process ID of the application.',
-              ),
-              'dtdUri': Schema.string(
-                description: 'The DTD URI of the application.',
-              ),
-            },
-            required: ['pid', 'dtdUri'],
-          ),
-        ),
-      },
-      required: ['apps'],
-    ),
-  );
-
-  Future<CallToolResult> _listRunningApps(CallToolRequest request) async {
-    final apps = _runningApps.entries
-        .where((entry) => entry.value.dtdUri != null)
-        .map((entry) {
-          return {'pid': entry.key, 'dtdUri': entry.value.dtdUri!};
-        })
-        .toList();
-
-    return CallToolResult(
-      content: [
-        TextContent(
-          text:
-              'Found ${apps.length} running application${apps.length == 1 ? '' : 's'}.\n${apps.map<String>((e) {
-                return 'PID: ${e['pid']}, DTD URI: ${e['dtdUri']}';
-              }).toList().join('\n')}',
-        ),
-      ],
-      structuredContent: {'apps': apps},
-    );
-  }
-
-  Future<CallToolResult> _getAppLogs(CallToolRequest request) async {
-    final pid = request.arguments!['pid'] as int;
-    log(LoggingLevel.info, 'Getting logs for application with PID: $pid');
-    final logs = _runningApps[pid]?.logs;
-
-    if (logs == null) {
-      log(
-        LoggingLevel.error,
-        'Application with PID $pid not found or has no logs.',
-      );
-      return CallToolResult(
-        isError: true,
-        content: [
-          TextContent(
-            text: 'Application with PID $pid not found or has no logs.',
-          ),
-        ],
-      );
-    }
-
-    return CallToolResult(
-      content: [TextContent(text: logs.join('\n'))],
-      structuredContent: {'logs': logs},
-    );
-  }
 
   Future<CallToolResult> _launchApp(CallToolRequest request) async {
     if (sdk.flutterExecutablePath == null) {
@@ -356,6 +221,76 @@ base mixin FlutterLauncherSupport
     }
   }
 
+  /// A tool to stop a running Flutter application.
+  final stopAppTool = Tool(
+    name: 'stop_app',
+    description: 'Kills a running Flutter process started by the launch_app tool.',
+    inputSchema: Schema.object(
+      properties: {
+        'pid': Schema.int(
+          description: 'The process ID of the process to kill.',
+        ),
+      },
+      required: ['pid'],
+    ),
+    outputSchema: Schema.object(
+      properties: {
+        'success': Schema.bool(
+          description: 'Whether the process was killed successfully.',
+        ),
+      },
+      required: ['success'],
+    ),
+  );
+
+  Future<CallToolResult> _stopApp(CallToolRequest request) async {
+    final pid = request.arguments!['pid'] as int;
+    log(LoggingLevel.info, 'Attempting to stop application with PID: $pid');
+    final app = _runningApps[pid];
+
+    if (app == null) {
+      log(LoggingLevel.error, 'Application with PID $pid not found.');
+      return CallToolResult(
+        isError: true,
+        content: [TextContent(text: 'Application with PID $pid not found.')],
+      );
+    }
+
+    final success = processManager.killPid(pid);
+    if (success) {
+      log(
+        LoggingLevel.info,
+        'Successfully sent kill signal to application $pid.',
+      );
+    } else {
+      log(
+        LoggingLevel.warning,
+        'Failed to send kill signal to application $pid.',
+      );
+    }
+
+    return CallToolResult(
+      content: [TextContent(text: 'Kill signal sent to application $pid.')],
+      structuredContent: {'success': success},
+    );
+  }
+
+  /// A tool to list available Flutter devices.
+  final listDevicesTool = Tool(
+    name: 'list_devices',
+    description: 'Lists available Flutter devices.',
+    inputSchema: Schema.object(),
+    outputSchema: Schema.object(
+      properties: {
+        'devices': Schema.list(
+          description: 'A list of available device IDs.',
+          items: Schema.string(),
+        ),
+      },
+      required: ['devices'],
+    ),
+  );
+
   Future<CallToolResult> _listDevices(CallToolRequest request) async {
     if (sdk.flutterExecutablePath == null) {
       return CallToolResult(
@@ -419,35 +354,101 @@ base mixin FlutterLauncherSupport
     }
   }
 
-  Future<CallToolResult> _stopApp(CallToolRequest request) async {
-    final pid = request.arguments!['pid'] as int;
-    log(LoggingLevel.info, 'Attempting to stop application with PID: $pid');
-    final app = _runningApps[pid];
+  /// A tool to get the logs for a running Flutter application.
+  final getAppLogsTool = Tool(
+    name: 'get_app_logs',
+    description:
+        'Returns the collected logs for a given flutter run process id. Can only retrieve logs started by the launch_app tool.',
+    inputSchema: Schema.object(
+      properties: {
+        'pid': Schema.int(
+          description: 'The process ID of the flutter run process running the application.',
+        ),
+      },
+      required: ['pid'],
+    ),
+    outputSchema: Schema.object(
+      properties: {
+        'logs': Schema.list(
+          description: 'The collected logs for the process.',
+          items: Schema.string(),
+        ),
+      },
+      required: ['logs'],
+    ),
+  );
 
-    if (app == null) {
-      log(LoggingLevel.error, 'Application with PID $pid not found.');
+  Future<CallToolResult> _getAppLogs(CallToolRequest request) async {
+    final pid = request.arguments!['pid'] as int;
+    log(LoggingLevel.info, 'Getting logs for application with PID: $pid');
+    final logs = _runningApps[pid]?.logs;
+
+    if (logs == null) {
+      log(
+        LoggingLevel.error,
+        'Application with PID $pid not found or has no logs.',
+      );
       return CallToolResult(
         isError: true,
-        content: [TextContent(text: 'Application with PID $pid not found.')],
-      );
-    }
-
-    final success = processManager.killPid(pid);
-    if (success) {
-      log(
-        LoggingLevel.info,
-        'Successfully sent kill signal to application $pid.',
-      );
-    } else {
-      log(
-        LoggingLevel.warning,
-        'Failed to send kill signal to application $pid.',
+        content: [
+          TextContent(
+            text: 'Application with PID $pid not found or has no logs.',
+          ),
+        ],
       );
     }
 
     return CallToolResult(
-      content: [TextContent(text: 'Kill signal sent to application $pid.')],
-      structuredContent: {'success': success},
+      content: [TextContent(text: logs.join('\n'))],
+      structuredContent: {'logs': logs},
+    );
+  }
+
+  /// A tool to list all running Flutter applications.
+  final listRunningAppsTool = Tool(
+    name: 'list_running_apps',
+    description:
+        'Returns the list of running app process IDs and associated DTD URIs for apps started by the launch_app tool.',
+    inputSchema: Schema.object(),
+    outputSchema: Schema.object(
+      properties: {
+        'apps': Schema.list(
+          description: 'A list of running applications started by the launch_app tool.',
+          items: Schema.object(
+            properties: {
+              'pid': Schema.int(
+                description: 'The process ID of the application.',
+              ),
+              'dtdUri': Schema.string(
+                description: 'The DTD URI of the application.',
+              ),
+            },
+            required: ['pid', 'dtdUri'],
+          ),
+        ),
+      },
+      required: ['apps'],
+    ),
+  );
+
+  Future<CallToolResult> _listRunningApps(CallToolRequest request) async {
+    final apps = _runningApps.entries
+        .where((entry) => entry.value.dtdUri != null)
+        .map((entry) {
+          return {'pid': entry.key, 'dtdUri': entry.value.dtdUri!};
+        })
+        .toList();
+
+    return CallToolResult(
+      content: [
+        TextContent(
+          text:
+              'Found ${apps.length} running application${apps.length == 1 ? '' : 's'}.\n${apps.map<String>((e) {
+                return 'PID: ${e['pid']}, DTD URI: ${e['dtdUri']}';
+              }).toList().join('\n')}',
+        ),
+      ],
+      structuredContent: {'apps': apps},
     );
   }
 
