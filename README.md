@@ -42,7 +42,6 @@ gemini extensions uninstall flutter
 
 The new commands will be available in new Gemini CLI sessions. The following commands will be available (with or without the `flutter:` prefix):
 
--   `/start` - Primes Gemini with the rules and context for Flutter development.
 -   `/create-app` - Guides you through bootstrapping a new Flutter project with best practices.
 -   `/refactor` - Manages a structured refactoring session with automated planning.
 -   `/commit` - Automates pre-commit checks and generates a descriptive commit message.
@@ -50,15 +49,6 @@ The new commands will be available in new Gemini CLI sessions. The following com
 ## 💡 Usage
 
 This extension provides powerful commands to automate key phases of the development lifecycle.
-
-### `/start`
-
-Initializes Gemini with the proper context for Flutter development. It summarizes the coding guidelines, documentation rules, and available tools. **Use this command at the beginning of a session.**
-
-```bash
-/start # Initialize context to start a session
-/start What were we last doing in this app? # Start a session and pick up where you left off
-```
 
 ### `/create-app`
 
