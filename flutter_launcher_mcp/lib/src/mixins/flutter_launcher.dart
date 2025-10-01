@@ -14,6 +14,14 @@ import 'package:dart_mcp/server.dart';
 import '../utils/process_manager.dart';
 import '../utils/sdk.dart';
 
+class _RunningApp {
+  final Process process;
+  final List<String> logs = [];
+  String? dtdUri;
+
+  _RunningApp(this.process);
+}
+
 /// A mixin that provides tools for launching and managing Flutter applications.
 ///
 /// This mixin registers tools for launching, stopping, and listing Flutter
@@ -22,9 +30,7 @@ import '../utils/sdk.dart';
 base mixin FlutterLauncherSupport
     on ToolsSupport, LoggingSupport, RootsTrackingSupport
     implements ProcessManagerSupport, SdkSupport {
-  final Map<int, Process> _runningProcesses = {};
-  final Map<int, List<String>> _appLogs = {};
-  final Map<int, String> _runningAppDtds = {};
+  final Map<int, _RunningApp> _runningApps = {};
 
   @override
   FutureOr<InitializeResult> initialize(InitializeRequest request) {
@@ -46,7 +52,8 @@ base mixin FlutterLauncherSupport
           description: 'The root directory of the Flutter project.',
         ),
         'target': Schema.string(
-          description: 'The main entry point file of the application.',
+          description:
+              'The main entry point file of the application. Defaults to "lib/main.dart".',
         ),
         'device': Schema.string(
           description: 'The device ID to launch the application on.',
@@ -157,9 +164,12 @@ base mixin FlutterLauncherSupport
   );
 
   Future<CallToolResult> _listRunningApps(CallToolRequest request) async {
-    final apps = _runningAppDtds.entries.map((entry) {
-      return {'pid': entry.key, 'dtdUri': entry.value};
-    }).toList();
+    final apps = _runningApps.entries
+        .where((entry) => entry.value.dtdUri != null)
+        .map((entry) {
+          return {'pid': entry.key, 'dtdUri': entry.value.dtdUri!};
+        })
+        .toList();
 
     return CallToolResult(
       content: [
@@ -177,7 +187,7 @@ base mixin FlutterLauncherSupport
   Future<CallToolResult> _getAppLogs(CallToolRequest request) async {
     final pid = request.arguments!['pid'] as int;
     log(LoggingLevel.info, 'Getting logs for application with PID: $pid');
-    final logs = _appLogs[pid];
+    final logs = _runningApps[pid]?.logs;
 
     if (logs == null) {
       log(
@@ -226,8 +236,7 @@ base mixin FlutterLauncherSupport
         workingDirectory: root,
         mode: ProcessStartMode.normal,
       );
-      _runningProcesses[process.pid] = process;
-      _appLogs[process.pid] = [];
+      _runningApps[process.pid] = _RunningApp(process);
       log(
         LoggingLevel.info,
         'Launched Flutter application with PID: ${process.pid}',
@@ -260,7 +269,7 @@ base mixin FlutterLauncherSupport
                 LoggingLevel.debug,
                 '[flutter stdout ${process!.pid}]: $line',
               );
-              _appLogs[process.pid]?.add('[stdout] $line');
+              _runningApps[process.pid]?.logs.add('[stdout] $line');
               checkForDtdUri(line);
             },
             onDone: () => stdoutDone.complete(),
@@ -276,7 +285,7 @@ base mixin FlutterLauncherSupport
                 LoggingLevel.warning,
                 '[flutter stderr ${process!.pid}]: $line',
               );
-              _appLogs[process.pid]?.add('[stderr] $line');
+              _runningApps[process.pid]?.logs.add('[stderr] $line');
               checkForDtdUri(line);
             },
             onDone: () => stderrDone.complete(),
@@ -292,9 +301,7 @@ base mixin FlutterLauncherSupport
             LoggingLevel.info,
             'Flutter application ${process!.pid} exited with code $exitCode.',
           );
-          _runningProcesses.remove(process.pid);
-          _appLogs.remove(process.pid);
-          _runningAppDtds.remove(process.pid);
+          _runningApps.remove(process.pid);
           if (!completer.isCompleted) {
             completer.completeError(
               'Flutter application exited with code $exitCode before the DTD URI was found.',
@@ -309,7 +316,7 @@ base mixin FlutterLauncherSupport
       final result = await completer.future.timeout(
         const Duration(seconds: 90),
       );
-      _runningAppDtds[result.pid] = result.dtdUri.toString();
+      _runningApps[result.pid]?.dtdUri = result.dtdUri.toString();
 
       return CallToolResult(
         content: [
@@ -393,9 +400,9 @@ base mixin FlutterLauncherSupport
   Future<CallToolResult> _stopApp(CallToolRequest request) async {
     final pid = request.arguments!['pid'] as int;
     log(LoggingLevel.info, 'Attempting to stop application with PID: $pid');
-    final process = _runningProcesses[pid];
+    final app = _runningApps[pid];
 
-    if (process == null) {
+    if (app == null) {
       log(LoggingLevel.error, 'Application with PID $pid not found.');
       return CallToolResult(
         isError: true,
@@ -425,13 +432,11 @@ base mixin FlutterLauncherSupport
   @override
   Future<void> shutdown() {
     log(LoggingLevel.info, 'Shutting down server, killing all processes.');
-    for (final pid in _runningProcesses.keys) {
+    for (final pid in _runningApps.keys) {
       log(LoggingLevel.debug, 'Killing process $pid.');
       processManager.killPid(pid);
     }
-    _runningProcesses.clear();
-    _appLogs.clear();
-    _runningAppDtds.clear();
+    _runningApps.clear();
     return super.shutdown();
   }
 }

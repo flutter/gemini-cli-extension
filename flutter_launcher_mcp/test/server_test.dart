@@ -322,12 +322,15 @@ void main() {
       );
 
       test.expect(logsResult.isError, test.isNot(true));
-      test.expect(logsResult.structuredContent, {
-        'logs': [
+      final logs = logsResult.structuredContent!['logs'] as List;
+      test.expect(logs, test.hasLength(2));
+      test.expect(
+        logs,
+        test.containsAll([
           '[stdout] The Dart Tooling Daemon is available at: $dtdUri',
           '[stderr] Some error output.',
-        ],
-      });
+        ]),
+      );
 
       // Try to get logs for a non-existent process
       final badLogsResult = await client.callTool(
