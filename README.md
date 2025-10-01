@@ -2,15 +2,15 @@
 
 Help Gemini CLI create, build, test, and run Flutter apps.
 
-*   **Status: Experimental** - This is an experimental project. Features and commands may change drastically. We welcome your feedback!
+- **Status: Experimental** - This is an experimental project. Features and commands may change drastically. We welcome your feedback!
 
 ## ✨ Features
 
--   **🚀 Project Bootstrapping**: Create new Flutter projects from scratch with built-in best practices, including linters, documentation, and design planning.
--   **🔧 Guided Refactoring**: Execute complex refactoring tasks with automated planning, git branch management, and step-by-step implementation guides for your approval.
--   **✅ Automated Pre-Commit Checks**: Automatically format, analyze, and test your code before committing to maintain codebase quality.
--   **✍️ Smart Commit Messaging**: Generate descriptive, conventional commit messages based on your staged changes.
--   **🧠 Context Priming**: Initializes Gemini with specific rules and context for Dart and Flutter, ensuring high-quality, idiomatic code generation.
+- **🚀 Project Bootstrapping**: Create new Flutter projects from scratch with built-in best practices, including linters, documentation, and design planning.
+- **🔧 Guided Modifications**: Execute complex modification tasks with automated planning, git branch management, and step-by-step implementation guides for your approval.
+- **✅ Automated Pre-Commit Checks**: Automatically format, analyze, and test your code before committing to maintain codebase quality.
+- **✍️ Smart Commit Messaging**: Generate descriptive, conventional commit messages based on your staged changes.
+- **🧠 Context Priming**: Initializes Gemini with specific rules and context for Dart and Flutter, ensuring high-quality, idiomatic code generation.
 
 ## 📋 Prerequisites
 
@@ -42,9 +42,9 @@ gemini extensions uninstall flutter
 
 The new commands will be available in new Gemini CLI sessions. The following commands will be available (with or without the `flutter:` prefix):
 
--   `/create-app` - Guides you through bootstrapping a new Flutter project with best practices.
--   `/refactor` - Manages a structured refactoring session with automated planning.
--   `/commit` - Automates pre-commit checks and generates a descriptive commit message.
+- `/create-app` - Guides you through bootstrapping a new Flutter project with best practices.
+- `/modify` - Manages a structured modification session with automated planning.
+- `/commit` - Automates pre-commit checks and generates a descriptive commit message.
 
 ## 💡 Usage
 
@@ -55,6 +55,7 @@ This extension provides powerful commands to automate key phases of the developm
 Initiates a guided process to bootstrap a new Flutter application, ensuring your project starts with a solid foundation.
 
 **Process:**
+
 1.  Asks for the package's purpose, details, and desired location on your filesystem.
 2.  Creates a new Flutter project with recommended settings and linter rules.
 3.  Generates starter `pubspec.yaml`, `README.md`, and `CHANGELOG.md` files.
@@ -64,18 +65,19 @@ Initiates a guided process to bootstrap a new Flutter application, ensuring your
 /create-app I want to create a trip planning app
 ```
 
-### `/refactor`
+### `/modify`
 
-Starts a structured session to refactor existing code. It helps you plan and execute changes safely and efficiently.
+Starts a structured session to modify existing code. It helps you plan and execute changes safely and efficiently.
 
 **Process:**
-1.  Asks for your high-level refactoring goals and what you want to accomplish.
-2.  Offers to create a new `git` branch for the refactoring work, isolating changes.
-3.  Generates a `REFACTOR.md` design document detailing the proposed changes.
-4.  Creates a phased `REFACTOR_IMPLEMENTATION.md` plan for your review and approval.
+
+1.  Asks for your high-level modification goals and what you want to accomplish.
+2.  Offers to create a new `git` branch for the modification work, isolating changes.
+3.  Generates a `MODIFICATION_DESIGN.md` design document detailing the proposed changes.
+4.  Creates a phased `MODIFICATION_IMPLEMENTATION.md` plan for your review and approval.
 
 ```bash
-/refactor
+/modify
 ```
 
 ### `/commit`
@@ -83,6 +85,7 @@ Starts a structured session to refactor existing code. It helps you plan and exe
 Prepares your staged `git` changes for a clean, high-quality commit. It acts as an automated pre-commit hook and message generator.
 
 **Process:**
+
 1.  Runs `dart fix` and `dart format` to clean and format your code.
 2.  Executes the Dart analyzer to check for static analysis issues.
 3.  Runs your project's test suite to ensure all tests are passing.
@@ -96,8 +99,8 @@ Prepares your staged `git` changes for a clean, high-quality commit. It acts as 
 
 This extension enforces a specific set of coding standards to ensure consistency and quality. These rules are defined in the extension's repository:
 
--   **`flutter.md`**: Contains rules and best practices for writing Dart and Flutter code. These rules are opinionated, and we encourage you to review them to ensure they align with your style.
--   **`override`**: Contains important, high-priority rules that are appended to the end of all prompts to ensure they have the most weight.
+- **`flutter.md`**: Contains rules and best practices for writing Dart and Flutter code. These rules are opinionated, and we encourage you to review them to ensure they align with your style.
+- **`override`**: Contains important, high-priority rules that are appended to the end of all prompts to ensure they have the most weight.
 
 ## 🐛 Troubleshooting
 
