@@ -224,7 +224,8 @@ base mixin FlutterLauncherSupport
   /// A tool to stop a running Flutter application.
   final stopAppTool = Tool(
     name: 'stop_app',
-    description: 'Kills a running Flutter process started by the launch_app tool.',
+    description:
+        'Kills a running Flutter process started by the launch_app tool.',
     inputSchema: Schema.object(
       properties: {
         'pid': Schema.int(
@@ -270,7 +271,13 @@ base mixin FlutterLauncherSupport
     }
 
     return CallToolResult(
-      content: [TextContent(text: 'Kill signal sent to application $pid.')],
+      content: [
+        TextContent(
+          text:
+              'Application with PID $pid ${success ? 'was stopped' : 'was unable to be stopped'}.',
+        ),
+      ],
+      isError: !success,
       structuredContent: {'success': success},
     );
   }
@@ -362,7 +369,8 @@ base mixin FlutterLauncherSupport
     inputSchema: Schema.object(
       properties: {
         'pid': Schema.int(
-          description: 'The process ID of the flutter run process running the application.',
+          description:
+              'The process ID of the flutter run process running the application.',
         ),
       },
       required: ['pid'],
@@ -413,7 +421,8 @@ base mixin FlutterLauncherSupport
     outputSchema: Schema.object(
       properties: {
         'apps': Schema.list(
-          description: 'A list of running applications started by the launch_app tool.',
+          description:
+              'A list of running applications started by the launch_app tool.',
           items: Schema.object(
             properties: {
               'pid': Schema.int(

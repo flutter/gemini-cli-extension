@@ -25,10 +25,7 @@ jobs:
       - name: Create archive (Linux/macOS)
         if: runner.os != 'Windows'
         run: |
-          bash ./scripts/build_release.sh >> $GITHUB_ENV
-          new_name="flutter-${{ runner.os }}.tar.gz"
-          mv $ARCHIVE_NAME $new_name
-          echo "ARCHIVE_NAME=$new_name" >> $GITHUB_ENV
+          bash ./scripts/build_release.sh
         shell: bash
 
       - name: Create archive (Windows)

@@ -42,5 +42,10 @@ git archive --format=tar -o "$archive_name" "$tag_name" \
 tar --append --file="$archive_name" "$exe_file"
 rm -f "$exe_file"
 gzip --force "$archive_name"
+archive_name="${archive_name}.gz"
 
-echo "ARCHIVE_NAME=$archive_name.gz"
+if [[ -n $GITHUB_ENV ]]; then
+  echo "ARCHIVE_NAME=$archive_name" >> $GITHUB_ENV
+else
+  echo "Archive written to $archive_name"
+fi
