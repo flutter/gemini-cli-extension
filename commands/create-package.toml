@@ -21,6 +21,7 @@ Next, collect remaining information from the user, one question at a time.
 
 The information you need to collect includes, but might not be limited to:
 
+- Whether this package is mean to be a pure Dart package or a Dart package which is used only with Flutter.
 - If there are ambiguous elements to the design, ask the user questions to clarify. When the goal is clear, or the user says to, then move on.
 - If the user didn't already give one, select a short descriptive name for the package.
 - Whether to do the work on the current git branch, or a new feature branch.
