@@ -22,13 +22,15 @@ Next, collect remaining information from the user, one question at a time.
 The information you need to collect includes, but might not be limited to:
 
 - If there are ambiguous elements to the design, ask the user questions to clarify. When the goal is clear, or the user says to, then move on.
-- If the user didn't already give one, select a short descriptive name for the project.
+- If the user didn't already give one, select a short descriptive name for the package.
 - Whether to do the work on the current git branch, or a new feature branch.
   - Suggest a branch name, making sure it is a valid git branch name.
 - Which directory to use as the package directory. Suggest a location.
 
 If the user wants the work done on a new branch, create the branch now.
 Then create the package directory, if it doesn't already exist.
+
+Change directories to the package directory so that future operations are relative to that directory.
 
 ## Design document
 
@@ -40,7 +42,8 @@ The design doc should (at least) include sections for:
 - A detailed analysis of the goal or problem
 - Alternatives considered
 - A detailed design for the new package
-- Any diagrams needed to explain the design (in Mermaid format)
+- Any diagrams needed to explain the design, in Mermaid format.
+  - Be sure to put quotes around labels that include special characters (e.g. parenthesis).
 - A summary of the design
 - References to research URLs used to arrive at the design.
 
@@ -56,19 +59,17 @@ The plan should include instructions similar to: "After completing a task, if yo
 
 In the first phase of the implementation plan, include:
 
-- [ ] Create a Dart or Flutter project (as appropriate for the purpose) in the desired location.
+- [ ] Create a Dart or Flutter package (as appropriate for the purpose) in the package directory.
   - Unless the user specifies otherwise, the package should support all of the default platforms.
   - Use the create_project tool to create the package.
-    - If the project is to be created in the current directory, use "." as the target for the create_project tool.
-    - Otherwise, supply the relative path from the root to the package directory as the argument to the create_project tool.
+    - If the current directory is the package directory, use "." as the target for the create_project tool.
     - The name of the package directory (even if it is the current directory) must be a valid Dart package name. If it isn't, then inform the user and suggest an alternative (valid) directory name.
-    - For Flutter projects, create an empty project using the `empty` flag for the tool.
-- [ ] Change directories to the package directory so that future operations are relative to that directory.
-- [ ] Remove the boilerplate in the new project by removing the test dir, if any, and any other unneccessary boilerplate.
+    - For Flutter packages, create an empty package using the `empty` flag for the tool.
+- [ ] Remove the boilerplate in the new package by removing the test dir, if any, and any other unneccessary boilerplate.
 - [ ] Update the description of the package in the `pubspec.yaml` and set the version number to 0.1.0.
-- [ ] Update the README.md to include a short placeholder description of the project.
+- [ ] Update the README.md to include a short placeholder description of the package.
 - [ ] Create the CHANGELOG.md to have the initial version of 0.1.0.
-- [ ] Commit this empty version of the project to either a new branch or the current branch based on the user's preference.
+- [ ] Commit this empty version of the package to either a new branch or the current branch based on the user's preference.
 
 The implementation plan should specify after each phase that you should:
 
