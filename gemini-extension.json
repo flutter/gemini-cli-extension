@@ -8,6 +8,12 @@
       "command": "dart",
       "args": ["mcp-server"],
       "trust": true
+    },
+    "flutter_launcher": {
+      "command": "dart",
+      "args": ["flutter_launcher_mcp.dill"],
+      "trust": true,
+      "cwd": "${extensionPath}${/}flutter_launcher_mcp"
     }
   }
 }

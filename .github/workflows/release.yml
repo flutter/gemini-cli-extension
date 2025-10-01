@@ -22,16 +22,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create archive
-        run: |
-          tag_name=${GITHUB_REF#refs/tags/}
-          archive_name="flutter.tar.gz"
-          git archive --format=tar.gz -o $archive_name $tag_name \
-            gemini-extension.json \
-            commands/ \
-            LICENSE \
-            README.md \
-            flutter.md
-          echo "ARCHIVE_NAME=$archive_name" >> $GITHUB_ENV
+        run: bash ./scripts/build_release.sh >> $GITHUB_ENV
 
       - name: Create GitHub Release with GH CLI
         env:
