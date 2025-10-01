@@ -13,25 +13,64 @@ on:
       - "v*"
 
 jobs:
-  release:
+  build-linux:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    container: google/dart:stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Create archive
         run: |
-          tag_name=${GITHUB_REF#refs/tags/}
-          archive_name="flutter.tar.gz"
-          git archive --format=tar.gz -o $archive_name $tag_name \
-            gemini-extension.json \
-            commands/ \
-            LICENSE \
-            README.md \
-            flutter.md
-          echo "ARCHIVE_NAME=$archive_name" >> $GITHUB_ENV
+          bash ./scripts/build_release.sh
+        shell: bash
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-archive-ubuntu-latest
+          path: ${{ env.ARCHIVE_NAME }}
+
+  build-non-linux:
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Dart
+        uses: dart-lang/setup-dart@v1
+
+      - name: Create archive (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          bash ./scripts/build_release.sh
+        shell: bash
+
+      - name: Create archive (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          ./scripts/build_release.ps1
+        shell: pwsh
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-archive-${{ matrix.os }}
+          path: ${{ env.ARCHIVE_NAME }}
+
+  release:
+    needs: [build-linux, build-non-linux]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
 
       - name: Create GitHub Release with GH CLI
         env:
@@ -39,4 +78,6 @@ jobs:
         run: |
           gh release create ${{ github.ref_name }} \
             --generate-notes \
-            ${{ env.ARCHIVE_NAME }}
+            artifacts/release-archive-ubuntu-latest/* \
+            artifacts/release-archive-macos-latest/* \
+            artifacts/release-archive-windows-latest/*
