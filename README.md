@@ -45,6 +45,7 @@ gemini extensions uninstall flutter
 The new commands will be available in new Gemini CLI sessions. The following commands will be available (with or without the `flutter:` prefix):
 
 - `/create-app` - Guides you through bootstrapping a new Flutter project with best practices.
+- `/create-package` - Guides you through bootstrapping a new Dart package with best practices.
 - `/refactor` - Manages a structured refactoring session with automated planning.
 - `/commit` - Automates pre-commit checks and generates a descriptive commit message.
 
