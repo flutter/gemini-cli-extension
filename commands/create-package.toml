@@ -30,7 +30,7 @@ The information you need to collect includes, but might not be limited to:
 If the user wants the work done on a new branch, create the branch now.
 Then create the package directory, if it doesn't already exist.
 
-Change directories to the package directory so that future operations are relative to that directory.
+**VERY IMPORTANT**: Change directories to the package directory now so that future operations are relative to that directory.
 
 ## Design document
 
@@ -65,7 +65,7 @@ In the first phase of the implementation plan, include:
     - If the current directory is the package directory, use "." as the target for the create_project tool.
     - The name of the package directory (even if it is the current directory) must be a valid Dart package name. If it isn't, then inform the user and suggest an alternative (valid) directory name.
     - For Flutter packages, create an empty package using the `empty` flag for the tool.
-- [ ] Remove the boilerplate in the new package by removing the test dir, if any, and any other unneccessary boilerplate.
+- [ ] Remove any boilerplate in the new package that will be replaced, including the test dir, if any.
 - [ ] Update the description of the package in the `pubspec.yaml` and set the version number to 0.1.0.
 - [ ] Update the README.md to include a short placeholder description of the package.
 - [ ] Create the CHANGELOG.md to have the initial version of 0.1.0.
