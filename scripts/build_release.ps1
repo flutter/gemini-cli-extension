@@ -1,3 +1,4 @@
+if (-not $env:GITHUB_REF) { $env:GITHUB_REF = "refs/tags/HEAD" }
 $tagName = $env:GITHUB_REF.Substring($env:GITHUB_REF.LastIndexOf("/") + 1)
 $archiveName = "win32.flutter.zip"
 $exeFile = "flutter_launcher_mcp.exe"

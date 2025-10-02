@@ -7,7 +7,7 @@ Help Gemini CLI create, build, test, and run Flutter apps.
 ## ✨ Features
 
 - **🚀 Project Bootstrapping**: Create new Flutter projects from scratch with built-in best practices, including linters, documentation, and design planning.
-- **🔧 Guided Refactoring**: Execute complex refactoring tasks with automated planning, git branch management, and step-by-step implementation guides for your approval.
+- **🔧 Guided Modifications**: Execute complex modification tasks with automated planning, git branch management, and step-by-step implementation guides for your approval.
 - **✅ Automated Pre-Commit Checks**: Automatically format, analyze, and test your code before committing to maintain codebase quality.
 - **✍️ Smart Commit Messaging**: Generate descriptive, conventional commit messages based on your staged changes.
 - **🧠 Context Priming**: Initializes Gemini with specific rules and context for Dart and Flutter, ensuring high-quality, idiomatic code generation.
@@ -46,7 +46,7 @@ The new commands will be available in new Gemini CLI sessions. The following com
 
 - `/create-app` - Guides you through bootstrapping a new Flutter project with best practices.
 - `/create-package` - Guides you through bootstrapping a new Dart package with best practices.
-- `/refactor` - Manages a structured refactoring session with automated planning.
+- `/modify` - Manages a structured modification session with automated planning.
 - `/commit` - Automates pre-commit checks and generates a descriptive commit message.
 
 ## 💡 Usage
@@ -68,19 +68,19 @@ Initiates a guided process to bootstrap a new Flutter application, ensuring your
 /create-app I want to create a trip planning app
 ```
 
-### `/refactor`
+### `/modify`
 
-Starts a structured session to refactor existing code. It helps you plan and execute changes safely and efficiently.
+Starts a structured session to modify existing code. It helps you plan and execute changes safely and efficiently.
 
 **Process:**
 
-1.  Asks for your high-level refactoring goals and what you want to accomplish.
-2.  Offers to create a new `git` branch for the refactoring work, isolating changes.
-3.  Generates a `REFACTOR.md` design document detailing the proposed changes.
-4.  Creates a phased `REFACTOR_IMPLEMENTATION.md` plan for your review and approval.
+1.  Asks for your high-level modification goals and what you want to accomplish.
+2.  Offers to create a new `git` branch for the modification work, isolating changes.
+3.  Generates a `MODIFICATION_DESIGN.md` design document detailing the proposed changes.
+4.  Creates a phased `MODIFICATION_IMPLEMENTATION.md` plan for your review and approval.
 
 ```bash
-/refactor
+/modify
 ```
 
 ### `/commit`
