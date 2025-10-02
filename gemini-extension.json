@@ -6,7 +6,9 @@
   "mcpServers": {
     "dart": {
       "command": "dart",
-      "args": ["mcp-server"],
+      "args": [
+        "mcp-server"
+      ],
       "trust": true
     },
     "flutter_launcher": {
