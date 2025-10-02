@@ -49,6 +49,16 @@ The new commands will be available in new Gemini CLI sessions. The following com
 - `/modify` - Manages a structured modification session with automated planning.
 - `/commit` - Automates pre-commit checks and generates a descriptive commit message.
 
+### 3. Available Tools
+
+This extension also installs an MCP server (`flutter_launcher`) that provides tools for starting, stopping, and interacting with Flutter applications. This server is started automatically, and the following tools are made available:
+
+- `launch_app`: Launches a Flutter application on a specified device.
+- `stop_app`: Stops a running Flutter application.
+- `list_devices`: Lists all available devices that can run Flutter applications.
+- `get_app_logs`: Retrieves the logs from a running Flutter application.
+- `list_running_apps`: Lists all Flutter applications currently running that were started by this extension.
+
 ## 💡 Usage
 
 This extension provides powerful commands to automate key phases of the development lifecycle.

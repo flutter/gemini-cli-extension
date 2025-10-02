@@ -60,11 +60,11 @@ Launches a Flutter application with specified arguments and returns its DTD URI 
       },
       "target": {
         "type": "string",
-        "description": "The main entry point file of the application."
+        "description": "The main entry point file of the application. Defaults to \"lib/main.dart\"."
       },
       "device": {
         "type": "string",
-        "description": "The device ID to launch the application on."
+        "description": "The device ID to launch the application on. To get a list of available devices to present as choices, use the list_devices tool."
       }
     },
     "required": ["root", "device"]
@@ -90,34 +90,11 @@ Launches a Flutter application with specified arguments and returns its DTD URI 
   }
   ```
 
-- **Example Call (Conceptual):**
-
-  ```dart
-  // Assuming 'client' is an initialized ServerConnection from dart_mcp
-  final launchResult = await client.callTool(
-    CallToolRequest(
-      name: 'launch_app',
-      arguments: {
-        'root': '/path/to/your/flutter/project',
-        'device': 'emulator-5554',
-      },
-    ),
-  );
-
-  if (!launchResult.isError) {
-    final dtdUri = launchResult.structuredContent!['dtdUri'] as String;
-    final pid = launchResult.structuredContent!['pid'] as int;
-    print('Flutter app launched! DTD URI: $dtdUri, PID: $pid');
-  } else {
-    print('Failed to launch Flutter app: ${launchResult.content.first.text}');
-  }
-  ```
-
 #### `stop_app`
 
 Kills a running Flutter process managed by this server.
 
-- **Description:** Kills a running Flutter process managed by this server.
+- **Description:** Kills a running Flutter process started by the launch_app tool.
 - **Input Schema:**
 
   ```json
@@ -148,23 +125,114 @@ Kills a running Flutter process managed by this server.
   }
   ```
 
-- **Example Call (Conceptual):**
+#### `list_devices`
 
-  ```dart
-  // Assuming 'client' is an initialized ServerConnection from dart_mcp
-  // and 'launchedPid' is the PID obtained from a previous launchFlutter call
-  final killResult = await client.callTool(
-    CallToolRequest(
-      name: 'stop_app',
-      arguments: {'pid': launchedPid},
-    ),
-  );
+Lists available Flutter devices.
 
-  if (!killResult.isError) {
-    final success = killResult.structuredContent!['success'] as bool;
-    print('Kill process result: $success');
-  } else {
-    print('Failed to kill process: ${killResult.content.first.text}');
+- **Description:** Lists available Flutter devices.
+- **Input Schema:**
+
+  ```json
+  {
+    "type": "object"
+  }
+  ```
+
+- **Output Schema:**
+
+  ```json
+  {
+    "type": "object",
+    "properties": {
+      "devices": {
+        "type": "array",
+        "description": "A list of available device IDs.",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": ["devices"]
+  }
+  ```
+
+#### `get_app_logs`
+
+Returns the collected logs for a given flutter run process id.
+
+- **Description:** Returns the collected logs for a given flutter run process id. Can only retrieve logs started by the launch_app tool.
+- **Input Schema:**
+
+  ```json
+  {
+    "type": "object",
+    "properties": {
+      "pid": {
+        "type": "integer",
+        "description": "The process ID of the flutter run process running the application."
+      }
+    },
+    "required": ["pid"]
+  }
+  ```
+
+- **Output Schema:**
+
+  ```json
+  {
+    "type": "object",
+    "properties": {
+      "logs": {
+        "type": "array",
+        "description": "The collected logs for the process.",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "required": ["logs"]
+  }
+  ```
+
+#### `list_running_apps`
+
+Returns the list of running app process IDs and associated DTD URIs.
+
+- **Description:** Returns the list of running app process IDs and associated DTD URIs for apps started by the launch_app tool.
+- **Input Schema:**
+
+  ```json
+  {
+    "type": "object"
+  }
+  ```
+
+- **Output Schema:**
+
+  ```json
+  {
+    "type": "object",
+    "properties": {
+      "apps": {
+        "type": "array",
+        "description": "A list of running applications started by the launch_app tool.",
+        "items": {
+          "type": "object",
+          "properties": {
+            "pid": {
+              "type": "integer",
+              "description": "The process ID of the application."
+            },
+            "dtdUri": {
+              "type": "string",
+              "description": "The DTD URI of the application."
+            }
+          },
+          "required": ["pid", "dtdUri"]
+        }
+      }
+    },
+    "required": ["apps"]
   }
   ```
 
