@@ -21,13 +21,21 @@ Next, collect remaining information from the user, one question at a time.
 
 The information you need to collect includes, but might not be limited to:
 
+- Whether this package is mean to be a pure Dart package or a Dart package which is used only with Flutter.
 - If there are ambiguous elements to the design, ask the user questions to clarify. When the goal is clear, or the user says to, then move on.
-- If the user didn't already give one, select a short descriptive name for the project.
-- Whether to do the work on the current git branch, or a new feature branch. Suggest a branch name.
+- If the user didn't already give one, select a short descriptive name for the package.
+- Whether to do the work on the current git branch, or a new feature branch.
+  - Suggest a branch name, making sure it is a valid git branch name.
+- Which directory to use as the package directory. Suggest a location.
+
+If the user wants the work done on a new branch, create the branch now.
+Then create the package directory, if it doesn't already exist.
+
+**VERY IMPORTANT**: Change directories to the package directory now so that future operations are relative to that directory.
 
 ## Design document
 
-Develop a **DETAILED** Markdown-formatted design document that follows all of the guidance you have about Dart and Flutter design patterns, rules, best practices, and core principles. Save the design document in DESIGN.md in the top directory of the new package. Feel free to use your available tools to research any aspects of the design that need clarification.
+Develop a **DETAILED** Markdown-formatted design document that follows all of the guidance you have about Dart and Flutter design patterns, rules, best practices, and core principles. Save the design document in DESIGN.md in the package directory. Feel free to use your available tools to research any aspects of the design that need clarification.
 
 The design doc should (at least) include sections for:
 
@@ -35,7 +43,8 @@ The design doc should (at least) include sections for:
 - A detailed analysis of the goal or problem
 - Alternatives considered
 - A detailed design for the new package
-- Any diagrams needed to explain the design (in Mermaid format)
+- Any diagrams needed to explain the design, in Mermaid format.
+  - Be sure to put quotes around labels that include special characters (e.g. parenthesis).
 - A summary of the design
 - References to research URLs used to arrive at the design.
 
@@ -43,20 +52,25 @@ You must ask the user to review this design document and they must approve it be
 
 ## Implementation plan
 
-After getting explicit approval from the user for the DESIGN.md document, Develop a **DETAILED** Markdown-formatted phased implementation plan of checkboxed tasks that need to be performed in order to finish developing the package. Save the implementation plan in IMPLEMENTATION.md in the top directory of the new package.
+After getting explicit approval from the user for the DESIGN.md document, Develop a **DETAILED** Markdown-formatted phased implementation plan of checkboxed tasks that need to be performed in order to finish developing the package. Save the implementation plan in IMPLEMENTATION.md in the package directory.
 
-The implementation plan should include a section for the "Journal" which will be updated after each phase.
+The implementation plan should include a section for a "Journal" which will be updated after each phase and contain a log of the actions taken, things learned, surprises, and deviations from the plan. It should be in chronological order.
 
 The plan should include instructions similar to: "After completing a task, if you added any TODOs to the code or didn't fully implement anything, make sure to add new tasks so that you can come back and complete them later." to prevent leaving tasks unfinished.
 
 In the first phase of the implementation plan, include:
 
-- [ ] Create a Dart or Flutter project (as appropriate for the purpose) in the desired location using the name. Unless the user specifies otherwise, the project should support all of the default platforms. Use the create_project tool to create it. For Flutter projects, create an empty project using the `empty` flag for the tool.
-- [ ] Remove the boilerplate in the new project by removing the test dir, if any, and the README.md file.
+- [ ] Create a Dart or Flutter package (as appropriate for the purpose) in the package directory.
+  - Unless the user specifies otherwise, the package should support all of the default platforms.
+  - Use the create_project tool to create the package.
+    - If the current directory is the package directory, use "." as the target for the create_project tool.
+    - The name of the package directory (even if it is the current directory) must be a valid Dart package name. If it isn't, then inform the user and suggest an alternative (valid) directory name.
+    - For Flutter packages, create an empty package using the `empty` flag for the tool.
+- [ ] Remove any boilerplate in the new package that will be replaced, including the test dir, if any.
 - [ ] Update the description of the package in the `pubspec.yaml` and set the version number to 0.1.0.
-- [ ] Update the README.md to include a short placeholder description of the project.
-- [ ] Update the CHANGELOG.md to have the initial version as 0.1.0.
-- [ ] Commit this empty version of the project to either a new branch or the current branch based on the user's preference.
+- [ ] Update the README.md to include a short placeholder description of the package.
+- [ ] Create the CHANGELOG.md to have the initial version of 0.1.0.
+- [ ] Commit this empty version of the package to either a new branch or the current branch based on the user's preference.
 
 The implementation plan should specify after each phase that you should:
 
@@ -66,13 +80,13 @@ The implementation plan should specify after each phase that you should:
 - [ ] Run any tests to make sure they all pass.
 - [ ] Run dart_format one more time to make sure that the formatting is still correct if you made any changes during the analysis and testing steps.
 - [ ] Re-read the IMPLEMENTATION.md file to see what, if anything, has changed in the implementation plan, and if it has changed, take care of anything the changes imply.
-- [ ] Update the IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section.
+- [ ] Update the IMPLEMENTATION.md file with the current state, including any learnings, surprises, or deviations in the Journal section. Check off any checkboxes of items that have been completed.
 - [ ] Use `git diff` to verify the changes that have been made, and create a suitable commit message for any changes, following any guidelines you have about commit messages. Be sure to properly escape dollar signs and backticks, and present the change message to the user for approval.
 - [ ] Wait for approval. Don't commit the changes or move on to the next phase of implementation until the user approves the commit.
 
-In the last phase of the plan, you should include a step to create a comprehensive README.md file for the package.
+In the last phase of the plan, include a step to create a comprehensive README.md file for the package.
 
-You must ask the user to review this implementation plan and they must approve it before starting implementation. They must review and approve it before you begin because if they ask for any changes, they may affect the implementation.
+You must ask the user to review this implementation plan and they must approve it before starting implementation. They must review and approve it before you begin because if they ask for any changes, the changes may affect the implementation.
 
 ## Implementation
 
