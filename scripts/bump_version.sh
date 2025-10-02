@@ -21,4 +21,22 @@ jq --arg version "$NEW_VERSION" '.version = $version' "$REPO_ROOT/gemini-extensi
 # Update pubspec.yaml
 yq -y ".version = \"$NEW_VERSION\"" "$REPO_ROOT/flutter_launcher_mcp/pubspec.yaml" > "$REPO_ROOT/flutter_launcher_mcp/pubspec.yaml.tmp" && mv "$REPO_ROOT/flutter_launcher_mcp/pubspec.yaml.tmp" "$REPO_ROOT/flutter_launcher_mcp/pubspec.yaml"
 
+# Check and update CHANGELOG.md
+CHANGELOG_FILE="$REPO_ROOT/CHANGELOG.md"
+if ! grep -q "## $NEW_VERSION" "$CHANGELOG_FILE"; then
+  echo "Adding version $NEW_VERSION to $CHANGELOG_FILE"
+  TEMP_FILE=$(mktemp)
+  {
+    echo "## $NEW_VERSION"
+    echo ""
+    echo "- TODO: Describe the changes in this version."
+    echo ""
+    cat "$CHANGELOG_FILE"
+  } > "$TEMP_FILE"
+  mv "$TEMP_FILE" "$CHANGELOG_FILE"
+fi
+
+# Update README.md
+sed -i "s/flutter_launcher_mcp: \^\d+\.\d+\.\d+/flutter_launcher_mcp: ^$NEW_VERSION/" "$REPO_ROOT/README.md"
+
 echo "Version bumped to $NEW_VERSION"

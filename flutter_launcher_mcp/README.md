@@ -22,7 +22,7 @@ To use `flutter_launcher_mcp`, add it as a dependency to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_launcher_mcp: ^0.1.0
+  flutter_launcher_mcp: ^0.2.1
 ```
 
 Then, run `dart pub get`.
