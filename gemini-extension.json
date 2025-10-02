@@ -6,14 +6,11 @@
   "mcpServers": {
     "dart": {
       "command": "dart",
-      "args": ["mcp-server"],
-      "trust": true
+      "args": ["mcp-server"]
     },
     "flutter_launcher": {
-      "command": "flutter_launcher_mcp.exe",
-      "args": [],
-      "trust": true,
-      "cwd": "${extensionPath}"
+      "command": "${extensionPath}${/}flutter_launcher_mcp.exe",
+      "args": []
     }
   }
 }
