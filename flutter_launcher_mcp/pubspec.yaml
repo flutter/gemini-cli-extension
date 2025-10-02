@@ -1,6 +1,6 @@
 name: flutter_launcher_mcp
 description: An MCP server for launching and managing Flutter applications.
-version: 0.2.1
+version: 0.2.2
 environment:
   sdk: ^3.9.0
 dependencies:

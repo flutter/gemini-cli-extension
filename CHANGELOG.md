@@ -1,3 +1,7 @@
+## 0.2.2
+
+- Fixes the executable path for the flutter_launcher MCP server.
+
 ## 0.2.1
 
 - Bumping version number to match the release.
