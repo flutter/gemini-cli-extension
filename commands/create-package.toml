@@ -2,7 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-# This command will be invoked via: /flutter:create_package
+# This command will be invoked via: /create-package (or /flutter:create-package in the case of collisions)
 
 description = "Create a new Dart or Flutter package, with an opinionated structure."
 

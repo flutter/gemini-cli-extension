@@ -1,4 +1,13 @@
-Your goal is to help a user debug an issue in their Dart or Flutter application. Follow these steps methodically.
+# Copyright 2025 The Flutter Authors.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+# This command will be invoked via: /debug-app (or /flutter:debug-app in the case of collisions)
+
+description = "Do a deep dive to debug a complex issue in a Dart or Flutter app or package."
+
+prompt = """
+We're going to debug a Dart or Flutter application. Your goal is to help the user debug an issue in their Dart or Flutter application. Follow these steps methodically.
 
 ## Problem Specification
 
@@ -98,3 +107,4 @@ Once the bug is confirmed to be fixed and the application is stable:
 - [ ] Run `dart_fix`, `dart_format`, `analyze_files`, and `run_tests` to ensure the codebase is clean and healthy.
 - [ ] Prepare a descriptive commit message for the fix, following the "Conventional Commits" specification. The message should include a subject, an optional body explaining the "why" behind the change, and a footer (e.g., `Fixes: #123`) if the user provides an issue number or link. Present the message to the user for approval before committing the changes.
   - Do not include the DEBUGGING_PLAN.md file in the commit. When done, ask the user if they would like to remove it.
+"""

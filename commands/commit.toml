@@ -2,7 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-# This command will be invoked via: /flutter:commit
+# This command will be invoked via: /commit (or /flutter:commit in the case of collisions)
 
 description = "Ensure your Dart or Flutter project is in a healthy place (analysis warnings and errors are addressed, for example) and prep a descriptive git commit."
 

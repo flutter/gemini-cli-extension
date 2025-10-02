@@ -2,7 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-# This command will be invoked via: /flutter:create_app
+# This command will be invoked via: /create-app (or /flutter:create-app in the case of collisions)
 
 description = "Create a new Flutter app, with an opinionated structure."
 

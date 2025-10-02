@@ -2,12 +2,12 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-# This command will be invoked via: /flutter:modify
+# This command will be invoked via: /modify (or /flutter:modify in the case of collisions)
 
 description = "Perform a modification of your Flutter or Dart project."
 
 prompt = """
-We're going to modify some code.
+We're going to modify some Dart or Flutter project code.
 
 ## Problem specification
 
