@@ -5,7 +5,8 @@ $exeFile = "flutter_launcher_mcp.exe"
 
 Push-Location flutter_launcher_mcp
 dart pub get
-dart compile exe bin/flutter_launcher_mcp.dart -o "../$exeFile"
+$version = (Get-Content pubspec.yaml | Select-String -Pattern "version:\s*(\S+)" | ForEach-Object { $_.Matches[0].Groups[1].Value })
+dart compile exe bin/flutter_launcher_mcp.dart -o "../$exeFile" --define=FLUTTER_LAUNCHER_VERSION=$version
 Pop-Location
 
 $tempDir = "temp_archive"

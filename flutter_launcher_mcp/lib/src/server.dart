@@ -50,7 +50,10 @@ final class FlutterLauncherMCPServer extends MCPServer
   }) : super.fromStreamChannel(
          implementation: Implementation(
            name: 'Flutter Launcher MCP Server',
-           version: '0.1.0',
+           version: const String.fromEnvironment(
+             'FLUTTER_LAUNCHER_VERSION',
+             defaultValue: '0.0.0-dev',
+           ),
          ),
          instructions:
              'Provides tools to launch and manage Flutter applications.',

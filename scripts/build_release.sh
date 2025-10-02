@@ -30,7 +30,8 @@ compile_log="$(mktemp --tmpdir compile_log_XXXX)"
 function build_exe() (
   CDPATH= cd flutter_launcher_mcp && \
   dart pub get && \
-  dart compile exe bin/flutter_launcher_mcp.dart -o "../$exe_file" 2>&1 > "$compile_log"
+  version=$(yq -r '.version' pubspec.yaml) && \
+  dart compile exe bin/flutter_launcher_mcp.dart -o "../$exe_file" --define=FLUTTER_LAUNCHER_VERSION=$version 2>&1 > "$compile_log"
 )
 
 build_exe || \
