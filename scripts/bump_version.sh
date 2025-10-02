@@ -37,6 +37,7 @@ if ! grep -q "## $NEW_VERSION" "$CHANGELOG_FILE"; then
 fi
 
 # Update README.md
-sed -i.bak 's/  flutter_launcher_mcp: \^.*/  flutter_launcher_mcp: ^'"$NEW_VERSION"/g' "$REPO_ROOT/flutter_launcher_mcp/README.md" && rm "$REPO_ROOT/flutter_launcher_mcp/README.md.bak"
+sed -i.bak 's/  flutter_launcher_mcp: \^.*/  flutter_launcher_mcp: ^'"$NEW_VERSION/g" "$REPO_ROOT/flutter_launcher_mcp/README.md" && \
+  rm "$REPO_ROOT/flutter_launcher_mcp/README.md.bak"
 
 echo "Version bumped to $NEW_VERSION"
