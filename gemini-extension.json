@@ -10,9 +10,10 @@
       "trust": true
     },
     "flutter_launcher": {
-      "command": "${extensionPath}${/}flutter_launcher_mcp.exe",
+      "command": "flutter_launcher_mcp.exe",
       "args": [],
-      "trust": true
+      "trust": true,
+      "cwd": "${extensionPath}"
     }
   }
 }
