@@ -1,3 +1,7 @@
+## 0.2.1
+
+- Bumping version number to match the release.
+
 ## 0.2.0
 
 - Added the `flutter_launcher_mcp` package, an MCP server installed with the
