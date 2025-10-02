@@ -47,7 +47,6 @@ The server exposes the following tools:
 
 Launches a Flutter application with specified arguments and returns its DTD URI and process ID.
 
-- **Description:** Launches a Flutter application and returns its DTD URI.
 - **Input Schema:**
 
   ```json
@@ -92,9 +91,8 @@ Launches a Flutter application with specified arguments and returns its DTD URI 
 
 #### `stop_app`
 
-Kills a running Flutter process managed by this server.
+Kills a running Flutter process started by the `launch_app` tool.
 
-- **Description:** Kills a running Flutter process started by the launch_app tool.
 - **Input Schema:**
 
   ```json
@@ -129,7 +127,6 @@ Kills a running Flutter process managed by this server.
 
 Lists available Flutter devices.
 
-- **Description:** Lists available Flutter devices.
 - **Input Schema:**
 
   ```json
@@ -158,9 +155,8 @@ Lists available Flutter devices.
 
 #### `get_app_logs`
 
-Returns the collected logs for a given flutter run process id.
+Returns the collected logs for a given flutter run process id. Can only retrieve logs started by the `launch_app` tool.
 
-- **Description:** Returns the collected logs for a given flutter run process id. Can only retrieve logs started by the launch_app tool.
 - **Input Schema:**
 
   ```json
@@ -196,9 +192,8 @@ Returns the collected logs for a given flutter run process id.
 
 #### `list_running_apps`
 
-Returns the list of running app process IDs and associated DTD URIs.
+Returns the list of running app process IDs and associated DTD URIs for apps started by the `launch_app` tool.
 
-- **Description:** Returns the list of running app process IDs and associated DTD URIs for apps started by the launch_app tool.
 - **Input Schema:**
 
   ```json
