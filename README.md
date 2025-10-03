@@ -115,6 +115,12 @@ This extension enforces a specific set of coding standards to ensure consistency
 - **`flutter.md`**: Contains rules and best practices for writing Dart and Flutter code. These rules are opinionated, and we encourage you to review them to ensure they align with your style.
 - **`override`**: Contains important, high-priority rules that are appended to the end of all prompts to ensure they have the most weight.
 
+## Known issues
+
+* Running a Flutter app from within Gemini CLI and then triggering a Hot Reload
+  does not work in Flutter stable <= 3.35.4.
+  Tracking issue: https://github.com/flutter/gemini-cli-extension/issues/82
+
 ## 🐛 Troubleshooting
 
 ### Common Issues
